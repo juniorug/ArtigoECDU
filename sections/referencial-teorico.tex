@@ -72,11 +72,13 @@ Sistemas de sensores para identificação recolhem um conjunto de dados brutos d
 No geral, sistemas de monitoramento podem ser não visuais, visuais (com ou sem a utilização de marcadores) ou uma combinação de ambos \cite{zhou2008human}.
 
 \subsubsection{Tecnologias visuais}\label{sec:sens-genericos}
-Muitos pesquisadores têm dedicado os seus esforços para a construção de sistemas de detecção de movimento robustos usando sensores baseados na visão usando câmeras. Os projetos de investigação com base em sensores baseados em visão consideram, principalmente, posição, velocidade, direção, forma e tamanho (ou seja, o número de \textit{pixels} em câmeras) como o contexto principal para identificar os usuários e compreender as suas atividades \cite{stauffer200l}.
+Muitos pesquisadores têm dedicado os seus esforços para a construção de sistemas de detecção de movimento robustos usando sensores baseados na visão usando câmeras. Os projetos de investigação que utilizam sensores baseados em visão consideram, principalmente, posição, velocidade, direção, forma e tamanho (ou seja, o número de \textit{pixels} em câmeras) como o contexto principal para identificar os usuários e compreender as suas atividades \cite{stauffer200l}.
 
 Existem duas principais técnicas no acompanhamento visual do movimento humano: rastreamento baseado marcador e rastreamento livre de marcador \cite{YTao2010}.
 
 Rastreamento visual com marcador base (\textit{Visual marker based tracking}) é uma técnica onde as câmeras são utilizadas para controlar os movimentos humanos. São adicionados identificadores sobre o corpo humano. Devido ao fato de o esqueleto humano ser uma estrutura altamente articulada, torções e rotações podem gerar movimento muito complexos. Como consequência, cada parte do corpo realiza uma trajetória de movimento imprevisível e complicada, o que pode levar a estimativa de movimento inconsistente e pouco confiável. Além disso, cenas desordenadas, ou variação de iluminação podem distrair a atenção visual a partir da posição real de um marcador. Como uma solução para esses problemas, o rastreamento visual com marcador base é preferível nestas circunstâncias \cite{zhang2002visual}.
+
+Sistemas de rastreamento baseado em marcador visual, são bastante utilizados como um "padrão" na análise de movimento humano devido à sua informação de posição precisa (os erros são de cerca de 1mm) \cite{zhang2002visual}. Esta função de precisão otimistamente motiva aplicações populares dos sistemas de rastreamento de marcadores visuais em medicina. Por exemplo, um Sistema de Captura de Movimento foi utilizado em um estudo para avaliar a relação entre os movimentos de equilíbrio corporal e as características antropométricas dos indivíduos, enquanto eles estavam em duas pernas com os olhos abertos e fechados \cite{kejonen2003}.
 
 Entretanto, essas tecnologias possuem limitações as quais podem apresentar falhas devido:
 
@@ -87,16 +89,22 @@ Entretanto, essas tecnologias possuem limitações as quais podem apresentar fal
     \item Marcadores podem mesmo vir à deriva completamente.
 \end{enumerate}
 
-Sistemas visuais de rastreamento livres de marcador (\textit{Marker-free visual based tracking systems}) somente exploram sensores óticos para medir o movimentos do corpo humano. Esta aplicação é motivada pelas falhas do uso de sistemas baseados em marcador visual, anteriormente apresentadas. 
- \textcolor{red}{essa subsubsubsubsubsecao está pobre}
 
+Sistemas visuais de rastreamento livres de marcador (\textit{Marker-free visual based tracking systems}) somente exploram sensores óticos para medir o movimentos do corpo humano. Esta aplicação é motivada pelas falhas do uso de sistemas baseados em marcador visual, anteriormente apresentadas. Como uma técnica de captura de movimento menos restritiva, os sistemas sem marcador são capazes de superar o problema de oclusão mútua, por exemplo, uma vez que se preocupam principalmente com os limites ou características dos corpos humanos\cite{zhou2008human}.
+
+
+Câmeras mais avançadas podem fornecer uma resolução de um milhão de pixels, indicando uma alta precisão na detecção de movimentos de objetos. Além disso, as câmeras hoje em dia podem ser facilmente obtidas com um baixo custo, e os parâmetros podem ser configurados de forma flexível pelo usuário. Esses méritos incentivam as filmadoras a serem usadas popularmente em aplicações de vigilância. O \textit{trade-off} se dá pelo fato de que esta técnica requer uma computação intensiva para realizar a localização 3D e a redução de erros, além da minimização da latência dos dados \cite{bryson1993}. Além disso, são necessárias câmeras de alta velocidade, já que as câmeras convencionais (com uma taxa de amostragem inferior a sessenta quadros por segundo) fornecem uma largura de banda insuficiente para uma representação de dados precisa \cite{bhatnagar1993position}.
 
 
 \subsubsection{Tecnologias não visuais}\label{sec:tec-vis}
 Sensores utilizados nestes sistemas interagem direta ou indiretamente com o corpo humano a fim de recolher informações relativas ao movimento. Estes sensores são comumente classificados como mecânicos, inerciais, envoltório acústico, rádio ou micro-ondas e com base magnética \cite{zhou2008human}. De um modo geral, cada tipo de sensor tem as suas próprias vantagens e limitações. Limitações de modalidade específica, medição específica, e circunstâncias específicas afetam, consequentemente, o uso de tipos particulares de sensores, em ambientes diferentes \cite{Welch:2002}.
 
+Mesmo que cada sensor tenha suas próprias desvantagens, outros sensores disponíveis podem ser usados como complemento. Por exemplo, para melhorar a precisão da computação de localização, as pessoas exploraram odômetros, em vez de acelerômetros, no projeto de robôs móveis \cite{zhou2008human}.
+
 \subsubsection{Tecnologias combinadas de rastreamento}\label{sec:rastre-robo}
 Estes sistemas tiram proveito das vantagens das tecnologias visuais e não visuais. Essa estratégia de combinação ajuda a reduzir erros decorrentes da utilização de plataformas individuais. Por exemplo, os limites ou silhuetas de partes do corpo humano podem ser capturados em uma trajetória de movimento, se marcadores montados sobre essas partes não estão no "campo de visão" das câmeras. Essa estratégia exige calibração e computação intensivas \cite{zhou2008human}.
+\textcolor{red}{Adicionar mais informação, se encontrada}
+
 
 \subsection{Técnicas de determinação de posição}\label{sec:determ-posic}
 Por natureza, o posicionamento é um problema interdisciplinar que traz consigo inúmeras questões em vários campos de pesquisa, como engenharia, ciência da computação e estatística. Como consequência, a concepção e implementação de um sistema de localização é uma tarefa bastante complexa que implica um entendimento nesses domínios \cite{linde2006aspects}. 
@@ -156,6 +164,12 @@ Outra abordagem de localização é a técnica de detecção de proximidade na q
  \textcolor{red}{essa subsubsubsubsubsecao está pobre. DETALHAR detecção de proximidade, incluindo calculos.}
 
 Pontos de referência (\textit{Landmarks}) são elementos estáticos de um ambiente que pode ser reconhecido por uma unidade móvel. Na maioria das vezes, os pontos de referência são formas geométricas, como retângulos, linhas ou códigos de barras. Itens naturais, como portas podem também servir como pontos de referência. O termo  análise de cena é frequentemente utilizado neste contexto. Unidades móveis tentam localizar-se  em determinado ambiente usando a visão da câmera, bem como funcionalidades de extração para analisar o cenário atual. Uma vez que um marco foi reconhecido e identificado de forma confiável, a posição atual da unidade em relação ao marco correspondente pode ser calculada. Isto é conseguido através de triangulação, trilateração e proximidade \cite{linde2006aspects}.
+
+
+ \subsection{Reconhecimento facial}\label{sec:recFacial}
+O reconhecimento facial é uma forma de identificar pessoas. Em desenvolvimento há muitos anos. esses sistemas permitem identificar alguém a um longo alcance, porém limitado principalmente pela resolução da câmera utilizada. No entanto, esta solução vem com algumas desvantagens. A adição de vigilância para o vídeo é necessária e, mesmo que seja explicitamente afirmado que as imagens são processadas e não armazenadas, ainda suscita preocupações que podem causar desconforto a alguns usuários. Outra desvantagem é que o software de reconhecimento facial não é muito confiável quando se trata de identificar dois seres semelhantes, como irmãos gêmeos idênticos \cite{fitzpatrick2013real}.
+
+O reconhecimento de faces e mais vantajoso nesse aspecto, pois é possível realizar a identificação de uma pessoa sem ela cooperar ou saber que está sendo identificado. Primeiro é necessário detectar e segmentar faces de cenas complexas (Detecção de Faces). Para cada face, o processo de extração de característica é aplicado (Extração de Característica) e as caracteristicas extraídas são comparadas com os templates cadastrados na galeria de faces. A decisão sobre a identidade da face é então tomada (Reconhecimento de face) \cite{cardia2015avaliaccao}.
  
  \subsection{Kinect}\label{sec:kinect}
  
