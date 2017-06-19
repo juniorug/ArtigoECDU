@@ -1,7 +1,6 @@
 \section{Referencial Teórico}\label{sec:referencial-teorico}
 
-Nesta Seção, os principais conceitos relacionados a este trabalho são apresentados, fornecendo subsídios para o desenvolvimento do projeto de detecção de pessoas em ambiente fechado, usando mapas de profundidade. A subseção \ref{sec:deteccao-rastreamento} apresenta conceitos relacionados à detecção e rastreamento de pessoas. A subseção \ref{sec:tec-rastreamento} discute o tópico tecnologias de rastreamento. Por fim, na subseção \ref{sec:determ-posic} são abordadas as técnicas de determinação de posição comumente utilizadas. \textcolor{red}{REVER esse paragrafo, atualizando-o ao final da edição dessa seção. EX: tecnologias de rastreamento devem ser exluidas.}
-
+Nesta Seção, os principais conceitos relacionados a este trabalho são apresentados, fornecendo subsídios para o desenvolvimento do projeto de detecção de pessoas em ambiente fechado, usando mapas de profundidade. A subseção \ref{sec:biometria} expõe informações referentes à biometria e sistemas biométricos. A subseção \ref{sec:deteccao-rastreamento} apresenta conceitos relacionados à detecção e rastreamento de pessoas. A subseção \ref{sec:tec-rastreamento} discute o tópico tecnologias de rastreamento. Na subseção \ref{sec:determ-posic} são abordadas as técnicas de determinação de posição comumente utilizadas. A subseção \ref{sec:recFacial} explicita a definição de reconhecimento facial. Por fim, na subseção \ref{sec:kinect} são apresentadas informaçoes e conceitos referentes ao \textit{Microsoft Kinect}.
 
 \subsection{Biometria e Sistemas Biométricos}\label{sec:biometria}
 O termo biometria deriva do grego bios (vida) + metron (medida) e, na autenticação, refere-se à utilização de características próprias de um indivíduo para proceder à sua autenticação e/ou identificação \cite{magalhaes2003biometria}. Na biometria utiliza-se caracteristicas fisicas/fisiológicas ou comportamentais para a identificação de pessoas, sendo baseada em algo que a pessoa e e não em algo que ela possui ou sabe. A Figura~\ref{fig:biometria} ilustra exemplos de características biométricas \cite{cardia2015avaliaccao}.
@@ -56,17 +55,17 @@ Uma das questões-chave da emergente computação móvel e robótica é a obten�
 
 
 \subsubsection{Detecção de pessoas}\label{sec:deteccao-movimento}
- 
- \textcolor{red}{essa subsecao está pobre}
- 
+Detectar seres humanos em imagens é uma tarefa desafiadora devido à sua aparência variável e à ampla gama de poses que eles podem adotar. A primeira necessidade é um conjunto de características robustas que permite que a forma humana seja discriminada de forma limpa, mesmo em ambientes despropositados sob iluminação difícil. Estudada a questão dos conjuntos de recursos para a detecção humana, dentre os principais métodos está  os descritores de histograma de desdobramento orientado (HOG) \cite{dalal2005histograms}. Os recursos baseados em gradientes, como HOG e EOH, envolvem a extração de pontos de interesse na imagem, como transformação de característica invariante em escala (EIPD), etc. Embora muitos relatórios mostrem que esses métodos Pode fornecer resultados de detecção de humanos altamente precisos, os métodos baseados em imagem RGB encontram dificuldades em perceber as formas dos seres humanos com poses articuladas ou quando o fundo é confuso. Isso resultará na diminuição da precisão ou no aumento do custo computacional\cite{dalal2005histograms}.
+
 \subsubsection{Identificação de indivíduos}\label{sec:identificacao-pessoas}
 
 Sistemas de sensores para identificação recolhem um conjunto de dados brutos do corpo humano, bem como extraem características distintas visando reconhecer o contexto principal: a identidade do objeto \cite{yun2014human}. Para esse fim, inúmeros sistemas têm sido estudados usando vários sensores, incluindo câmeras, sensores de movimento, blocos de pressão, radares, sensores de campo elétrico, etc.
-\textcolor{red}{essa subsecao está pobre}
- 
+
+O termo identificação significa o ato ou processo de estabelecer a identidade, ou reconhecer, ou ainda tratar uma coisa como idêntica a outra. Significa ainda o ato, ou processo, de fazer, representar ser, ou considerar ou tratar como o mesmo ou idêntico\cite{yun2014human} .
+
 \subsubsection{Rastreamento de pessoas}\label{sec:rastre-amb-fec}
 
- \textcolor{red}{essa subsecao está pobre}
+O acompanhamento do movimento das pessoas está se tornando importante em várias áreas de aplicação, onde a atividade dos indivíduos precisam ser analisadas ou monitoradas. Em tais aplicações, uma grande quantidade de informações pode ser obtida a partir de trajetórias que dão as coordenadas espaço-temporais de cada indivíduo no meio ambiente. As informações que podem ser obtidas a partir de tais trajetórias e incluem uma contagem dinâmica do número de pessoas dentro de uma área monitorada, o tempo gasto por indivíduos em uma área e padrões de fluxo de tráfego em um ambiente \cite{segen1996camera}. 
 
 \subsection{Tecnologias de detecção Visuais, não visuais e combinadas}\label{sec:tec-rastreamento}
 No geral, sistemas de monitoramento podem ser não visuais, visuais (com ou sem a utilização de marcadores) ou uma combinação de ambos \cite{zhou2008human}.
@@ -107,7 +106,25 @@ Estes sistemas tiram proveito das vantagens das tecnologias visuais e não visua
 
 
 \subsection{Técnicas de determinação de posição}\label{sec:determ-posic}
-Por natureza, o posicionamento é um problema interdisciplinar que traz consigo inúmeras questões em vários campos de pesquisa, como engenharia, ciência da computação e estatística. Como consequência, a concepção e implementação de um sistema de localização é uma tarefa bastante complexa que implica um entendimento nesses domínios \cite{linde2006aspects}. 
+Por natureza, o posicionamento é um problema interdisciplinar que traz consigo inúmeras questões em vários campos de pesquisa, como engenharia, ciência da computação e estatística. Como consequência, a concepção e implementação de um sistema de localização é uma tarefa bastante complexa que implica um entendimento nesses domínios. No entanto, a metodologia de estimativa de localização é, em princípio, a mesma que utilizada nos tempos antigos, onde as pessoas usavam a constelação de estrelas para deduzir a localização. Hoje são utilizados dispositivos de referência fixos em locais conhecidos do nosso entorno. Então, o alvo móvel cuja posição deve ser determinada mede ângulos ou distâncias em direção a esses pontos de referência. \cite{linde2006aspects}. Algumas aplicações de localização interna encontram-se resumidas na tabela \ref{table:aplicacoes}.
+
+\begin{table*}[ht]
+\centering
+\caption{Exemplos de aplicações que utilizam localização interna \cite{linde2006aspects}.}
+\label{table:aplicacoes}
+\begin{tabular}[ht]{llllllllp{2.5cm}p{8cm}}
+\begin{sideways}Indústria \end{sideways} & \begin{sideways}Logística\end{sideways} & \begin{sideways}Comercial\end{sideways} & \begin{sideways}Médico\end{sideways} & \begin{sideways}Casas Inteligentes\end{sideways} & \begin{sideways}Lugares Públicos \end{sideways}& \begin{sideways}Turismo\end{sideways} & \begin{sideways}Redes de sensores\end{sideways} & Objetivo   & Propósito \\  \hline
+$\boxtimes$ & $\boxtimes$ & $\Box$      & $\Box$      & $\Box$      & $\Box$      & $\Box$      & $\Box$      & Veículos guiados e robôs   & Navegação na unidade de produção ou armazém \\
+$\boxtimes$ & $\boxtimes$ & $\boxtimes$ & $\boxtimes$ & $\boxtimes$ & $\Box$      & $\Box$      & $\Box$      & produtos   & Encontrar bens / objetos           \\
+$\Box$      & $\Box$      & $\boxtimes$ & $\Box$      & $\Box$      & $\Box$      & $\Box$      & $\Box$      & Clientes   & Perfis dos hábitos dos clientes, assistente de compras pela navegação          \\
+$\Box$      & $\Box$      & $\Box$      & $\Box$      & $\boxtimes$ & $\Box$      & $\Box$      & $\Box$      & Pessoas    & Controle climático da casa inteligente, características de conveniência, detecção de intruso, monitoramento eletrônico de prisão domiciliar          \\
+$\Box$      & $\Box$      & $\Box$      & $\boxtimes$ & $\Box$      & $\Box$      & $\Box$      & $\Box$      & Pacientes  & Encontrar pacientes         \\
+$\boxtimes$ & $\Box$      & $\boxtimes$ & $\boxtimes$ & $\Box$      & $\Box$      & $\Box$      & $\Box$      & Empregados & Observação e perfil          \\
+$\Box$      & $\Box$      & $\Box$      & $\Box$      & $\Box$      & $\boxtimes$ & $\boxtimes$ & $\Box$      & Pessoas    & Sistemas de orientação de emergência          \\
+$\Box$      & $\Box$      & $\Box$      & $\Box$      & $\Box$      & $\Box$      & $\Box$      & $\boxtimes$ & Nós        & Roteamento com localização, detecção distribuída \\ 
+\hline         
+\end{tabular}
+\end{table*}
 
 \subsubsection{Posição física e localização simbólica}\label{sec:posic-fisica}
 A localização simbólica, ou posicionamento relativo, descreve o procedimento de determinação da posição atual de um alvo móvel usando o curso e a velocidade da informação. Pode ser subdividida em duas abordagens: odometria e navegação inercial \cite{linde2006aspects}.
@@ -131,12 +148,20 @@ A trilateração é uma técnica para calcular uma posição de um objeto $m$, t
 
 
 
- \begin{figure}[ht]
+ \begin{figure}[h]
 \centering
-    \includegraphics[resolution=300,width=0.4\textwidth,natwidth=610,natheight=642]{images/trilateracao.png}
+    \includegraphics[resolution=300,width=0.39\textwidth,natwidth=610,natheight=642]{images/trilateracao.png}
     \caption{Esquema de Trilateração.}
     \label{fig:trilateracao}
 \end{figure}
+
+
+\begin{figure*}[ht]
+\centering
+\includegraphics[resolution=300,width=0.7\textwidth,natwidth=610,natheight=642]{images/triangulacao.png}
+    \caption{Esquemas de triangulação.}
+    \label{fig:triang}
+\end{figure*}
 
 \subsubsection{Triangulação}\label{sec:triang}
 
@@ -152,16 +177,8 @@ Triangulação requer a medição de ângulos entre as unidades de referência f
  \end{itemize}
 
 
-\begin{figure*}[ht]
-\centering
-\includegraphics[resolution=300,width=0.7\textwidth,natwidth=610,natheight=642]{images/triangulacao.png}
-    \caption{Esquemas de triangulação.}
-    \label{fig:triang}
-\end{figure*}
- 
 \subsubsection{Proximidade e análise de cena}\label{sec:proximidade}
 Outra abordagem de localização é a técnica de detecção de proximidade na qual a posição de um alvo é aproximada, selecionando a localização da unidade de referência mais próxima. Por conseguinte, não é necessário cálculo de localização. Alternativamente, se várias unidades de referência estão dentro do alcance, o baricentro entre estas unidades podem produzir uma melhor estimativa \cite{EHuber1996}.
- \textcolor{red}{essa subsubsubsubsubsecao está pobre. DETALHAR detecção de proximidade, incluindo calculos.}
 
 Pontos de referência (\textit{Landmarks}) são elementos estáticos de um ambiente que pode ser reconhecido por uma unidade móvel. Na maioria das vezes, os pontos de referência são formas geométricas, como retângulos, linhas ou códigos de barras. Itens naturais, como portas podem também servir como pontos de referência. O termo  análise de cena é frequentemente utilizado neste contexto. Unidades móveis tentam localizar-se  em determinado ambiente usando a visão da câmera, bem como funcionalidades de extração para analisar o cenário atual. Uma vez que um marco foi reconhecido e identificado de forma confiável, a posição atual da unidade em relação ao marco correspondente pode ser calculada. Isto é conseguido através de triangulação, trilateração e proximidade \cite{linde2006aspects}.
 
@@ -200,7 +217,15 @@ O Kinect (Fig.~\ref{fig:kinect}) é um sensor de movimento, projetado pela Micro
 \end{table}
 
 
+ \subsubsection{Câmera de profundidade (\textit{Depth-camera})}\label{sec:depth}
+A câmera de profundidade é um dispositivo que pode detectar diretamente o alcance da superfície física mais próxima em cada pixel. A câmera de profundidade é única porque possibilita a modelagem 3D em tempo real da geometria da superfície. As câmeras de profundidade oferecem várias vantagens em relação aos sensores de intensidade tradicionais, trabalhando em baixos níveis de luz, fornecendo uma estimativa de escala calibrada, sendo invariante de cores e texturas e resolvendo ambiguidades de silhueta em pose. Eles também simplificam muito alguns difíceis problemas de visão computaconal, como a remoção de fundo falso em uma aplicação de videoconferência \cite{wilson2010combining}. Além disso, é capaz de sintetizar imagens de profundidade realistas de pessoas e, assim, criar um grande conjunto de dados de treinamento, com baixo custo. Algumas das tecnologias usadas para obter informações de profundidade da câmera em profundidade são luz infravermelha e estruturada de tempo de vôo (\textit{time-of-flight}) \cite{bogomjakov2006free}.
+
+
+ \subsubsection{Nuvem de pontos (\textit{Depth-camera})}\label{sec:nuvem}
+A nuvem de pontos é uma estrutura de dados usada para representar uma coleção de pontos multi-dimensionais e é comumente usada para representar dados tridimensionais. Em uma nuvem de pontos 3D, os pontos geralmente representam as coordenadas geométricas $X$, $Y$ e $Z$ de uma superfície subjacente amostrada. Quando as informações de cor estão presentes, a nuvem torna-se ponto 4D \cite{gustavo2014Localizacao}.
+
+
 \textcolor{red}{como que tudo isso que vc escreveu nessa secao se relacionada ao seu trabalho? o que vc usará? é sempre bom ir deixando claro isso.}
 
 
- Neste trabalho, será apresentada uma nova abordagem sensorial: associação de Técnicas Visuais e Não Visuais para a detecção \textcolor{red}{alinhe isso com o seu título. lá vc fala de identificacao e rastreamento, aqui vc diz deteccao. novamente misturando os conceitos. seja conciso nisso} de presença em um ambiente interno \cite{yun2014human}.
+ Neste trabalho, será apresentada uma nova abordagem sensorial: associação de Técnicas Visuais e Não Visuais para a detecção \textcolor{red}{alinhe isso com o seu título. lá vc fala de identificação e rastreamento, aqui vc diz detecção. novamente misturando os conceitos. seja conciso nisso} de presença em um ambiente interno \cite{yun2014human}.
