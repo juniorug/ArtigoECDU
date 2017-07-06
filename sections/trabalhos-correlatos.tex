@@ -19,12 +19,15 @@ A utilização do Kinect resolve os problemas anteriormente referidos. Com o Kin
 
 Alguns estudos utilizam o Kinect para projetar sistemas de posicionamento de pessoas. Schindhelm \cite{schindhelm2012evaluating} mostrou que o Kinect foi muito aplicável no posicionamento \textit{indoor} de edifícios públicos. Nakano et al. \cite{nakano2012kinect} também propôs usar o Kinect para o posicionamento de pessoas \textit{indoor}. No entanto, os sistemas acima referidos não têm a função de identificação de pessoas. 
 
+Sung et al. \cite{sung2012unstructured} propõe um sistema de detecção de atividade e reconhecimento usando um sensor de RGBD \textit{Kinect}. Primeiramente é capturada a natureza hierárquica usando um modelo gráfico probabilístico hierárquico, especificamente modelo de entropia máxima de Markov (\textit{maximum entropy Markov model } - Memm) de duas camadas. Mesmo com esse modelo estruturado no lugar, pessoas diferentes realizam diferentes tarefas em velocidades diferentes, e qualquer modelo gráfico único, provavelmente, não consegue captar essa variação. Para superar esse problema, é apresentado um método de seleção de estrutura gráfica \textit{on-the-fly} que pode se adaptar a variações na velocidade automaticamente. O ultimo passo, para capturar as características significativas de uma pessoa, é utilizando o sistema de rastreamento de esqueleto PrimeSense \cite{primeSence2014} em combinação com histograma de gradientes orientados. Esse trabalho tem seu foco, porém, na detecção de pessoas para extração de informações de atividades rotineiras de um certo indivíduo.
+
+
+Há um grande corpo de outros trabalhos sobre o reconhecimento de atividade humana. Uma abordagem comum é usar características espaço-temporais para modelar pontos de interesse em vídeo \cite{dollar2005behavior,laptev2003space}.
+
+
 
 Lu Xia et al. \cite{xia2011human} apresentam um método baseado em modelo para detecção humana a partir de imagens de profundidade. este método detecta as pessoas usando informações de profundidade obtidas pelo \textit{Kinect} em ambientes internos. utilizando um processo de detecção de cabeça de 2 estágios, que inclui um detector de borda 2D e um detector de forma 3D para então utilizar as informações de borda e as informações de mudança de profundidade relacional na imagem de profundidade. Também propõe um método de segmentação para segmentar a figura dos objetos de fundo que lhe são anexados e extrair o contorno geral do assunto com precisão. O método é avaliado em um conjunto de dados 3D previamente obtido pelo \textit{Kinect}.
 
 
 
 A maior semelhança entre esse trabalho e os descritos anteriormente é que todos utilizam o Kinect como um dispositivo substituto dos scanners 3D tradicionais. Porém, ao contrário dos demais, este não utiliza as imagens RGB. Além disso, os trabalhos citados apenas executam um algoritmo de decisão sobre uma base de dados contendo imagens de mapas de profundidade gerados pelo  \textit{Kinect}, enquanto o objetivo desse trabalho é executar e exibir em  \textit{runtime} o resultado do algoritmo de detecção.
-
-
-\textcolor{red}{- carece de mais trabalhos relacionados para seu trabalho final - mais tarde é importante, uma tabela comparativa.}

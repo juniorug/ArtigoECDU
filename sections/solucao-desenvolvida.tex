@@ -1,11 +1,5 @@
 \section{Solução desenvolvida}\label{sec:solucao-desenvolvida}
-Motivado pela demanda de serviços de identificação de pessoas e pelo fato de que as soluções para tal problema ainda permanecem em aberto, este trabalho propõe a utilização de um método ainda recente na área sensorial: a utilização de mapas de profundidade. O mecanismo de identificação consiste em extrair esse mapa através do projetor infravermelho e do sensor monocromático, e analisar os dados obtidos, utilizando de filtros e algoritmos de segmentação. Por fim, é exibida graficamente uma visualização do mapa de profundidade gerado e, em caso de positivo, o(s) indivíduo(s) encontrado(s) na cena. É exibido também os dados que podem ser exportados para plataformas externas: a localização aproximada dos sujeitos no plano 3D (posições $X$, $Y$ e $Z$) e a distância em relação ao \textit{Kinect}. Nesta seção é discutida a solução desenvolvida.
 
-
-
-\subsection{Arquitetura da solução}\label{sec:arqSol}
-O \textit{Kinect} será responsável por obter a visualização da cena de um ambiente interno. Como discutido na seção \ref{sec:trabalhos-relacionados}, o \textit{Kinect} é um sensor de movimento muito eficiente, extraindo com precisão objetos, pessoas e detalhes de uma cena. A \textit{Microsoft} provê para o \textit{Kinect} um Kit de desenvolvimento de software (\textit{Software Development Kit}, SDK).O sistema é composto por módulos adicionados à camada de aplicação, Sobre a camada do SDK. A Figura \ref{fig:visao-geral} apresenta uma visão geral da solução.
- 
 \begin{figure*}[ht]
 \centering
 \includegraphics[width=1.0\textwidth]{images/Arquitetura_da_solucao.png}
@@ -13,6 +7,19 @@ O \textit{Kinect} será responsável por obter a visualização da cena de um am
 \label{fig:visao-geral}
 \end{figure*}
 
+Motivado pela demanda de serviços de identificação de pessoas e pelo fato de que as soluções para tal problema ainda permanecem em aberto, este trabalho propõe a utilização de mapas de profundidade. O mecanismo de identificação consiste em extrair esse mapa através do projetor infravermelho e do sensor monocromático, e analisar os dados obtidos, utilizando de filtros e algoritmos de segmentação. Por fim, é exibida graficamente uma visualização do mapa de profundidade gerado e, em caso de positivo, o(s) indivíduo(s) encontrado(s) na cena. É exibido também os dados que podem ser exportados para plataformas externas: a localização aproximada dos sujeitos no plano 3D (posições $X$, $Y$ e $Z$) e a distância em relação ao \textit{Kinect}. Nesta seção é discutida a solução desenvolvida.
+
+\subsection{Arquitetura da solução}\label{sec:arqSol}
+Para processar os dados de profundidade do sensor \textit{Kinect}, a aplicação executa o seguinte fluxo de dados:
+
+\begin{enumerate}
+    \item Habilitar o canal de fluxo de profundidade com o tipo de formato de imagem em profundidade; 
+    \item Anexar o manipulador de eventos ao canal de fluxo; 
+    \item Processar os quadros de profundidade de entrada; 
+    \item Renderizar os quadros na UI.
+\end{enumerate}
+
+O \textit{Kinect} é o responsável por obter a visualização da cena de um ambiente interno. Como discutido na seção \ref{sec:trabalhos-relacionados}, o \textit{Kinect} é um sensor de movimento muito eficiente, extraindo com precisão objetos, pessoas e detalhes de uma cena. A \textit{Microsoft} provê para o \textit{Kinect} um Kit de desenvolvimento de software (\textit{Software Development Kit}, SDK). O sistema é composto por módulos adicionados à camada de aplicação, Sobre a camada do SDK. A Figura \ref{fig:visao-geral} apresenta uma visão geral da solução.
 
 \subsubsection{Estilos arquiteturais}\label{sec:estilosArq}
 A solução apresenta um estilo arquitetural híbrido, com características de três estilos arquiteturais básicos:
@@ -26,7 +33,6 @@ A solução apresenta um estilo arquitetural híbrido, com características de t
 O estilo baseado em eventos (\textit{Event Based}) é um estilo arquitetônico baseado na invocação implícita que fornece uma interação indireta entre componentes acoplados de forma livre, facilitando a adaptação e melhorando a escalabilidade do sistema. Os componentes do tipo de evento (\textit{Depth}, \textit{color} e \textit{Infrared}.) comunicam-se apenas através de eventos transmitidos por um conector de evento.
 Este conector então retransmite os eventos para todos os componentes do tipo \textit{Observer} mostrando interesse no evento em questão (Nesse caso, o \textit{Recognition Stream}), melhorando assim a eficiência da distribuição de eventos.
 
-
 \textit{Pipes} e Filtros (\textit{Pipe and Filter}) é um estilo arquitetural composto por uma cadeia de elementos de processamento, dispostos de forma tal que a saída de cada elemento é a entrada do próximo. O fluxo de dados se dá através de \textit{pipes} (canos) e os dados sofrem transformações quando processados nos filtros. Em outras palavras, os \textit{pipes} é que possibilitam o fluxo dos dados, e os filtros fazem o processamento dos mesmos, colocando-os nos \textit{pipes} antes que todos os dados de entrada sejam consumidos. Portanto, a nível de arquitetura, o processamento é mapeado em filtros e os \textit{pipes} agem como condutores de dados. O componente \textit{Recognition Stream} é composto por subcomponentes do tipo \textit{Filter} e a comunicação entre os mesmos se dá através dos conectores do tipo \textit{Pipe}. 
 
 As arquiteturas de máquinas virtuais (\textit{Virtual Machines}) têm como objetivo alcançar a qualidade da portabilidade. Este estilo de arquitetural simula algumas funcionalidades que não são originais para o \textit{hardware} e/ou \textit{software} em que é implementado. O estilo é aplicado entre o \textit{Kinect (hardware)} e a aplicação desenvolvida, usando conectores do tipo \textit{Event} e \textit{Pipe} entre as camadas. Esse estilo arquitetônico reduz a complexidade, melhora a modularidade, reutilização e manutenção.
@@ -37,7 +43,6 @@ Conforme visto na figura \ref{fig:visao-geral}, o sistema possui as camadas:
 \item \textit{Kinect} SDK; 
 \item Aplicação; 
 \end{itemize}
-
 
 \subsubsection{Arquitetura do \textit{Kinect for Windows} SDK}\label{sec:kinectSDK}
 O SDK fornece uma biblioteca e ferramentas de software sofisticadas para ajudar os desenvolvedores a usar a forma rica de entrada natural baseada no uso do \textit{Kinect}, que detecta e reage a eventos do mundo real. O \textit{Kinect} e a biblioteca de software interagem com aplicações, como mostrado na Figura \ref{fig:sdk_interact}. Os componentes do SDK são exibidos na figura \ref{fig:sdk_architecture_color} e incluem:
@@ -50,12 +55,6 @@ O SDK fornece uma biblioteca e ferramentas de software sofisticadas para ajudar 
 \end{figure}
 
 
-\begin{figure*}[ht]
-\centering
-\includegraphics[width=0.8\textwidth]{images/sdk_architecture_color.png}
-\caption{Arquitetura do SDK}
-\label{fig:sdk_architecture_color}
-\end{figure*}
 
 \begin{enumerate}
     \item \textit{Hardware Kinect} - Os componentes de \textit{hardware}, incluindo o sensor \textit{Kinect} e o \textit{hub} USB através dos quais o sensor \textit{Kinect} está conectado ao computador;
@@ -79,13 +78,56 @@ O SDK fornece uma biblioteca e ferramentas de software sofisticadas para ajudar 
 \subsubsection{Color Data Stream}\label{sec:colorDataStream}
 
 \subsubsection{Depth Data Stream}\label{sec:depthDataStream}
-capturing data stream
+\textcolor{red}{capturing data stream}
+
+Quando se trata do Kinect, há apenas uma imagem, que é capturada pelo sensor de profundidade IR. Então, como funciona a triangulação estéreo? Na verdade, existem duas imagens em vez de uma. A segunda imagem é invisível - é um padrão do emissor IR, já definido com o laser IR. O laser IR não é modulado. Tudo o que o laser faz é projetar um padrão pseudo-aleatório de especificações no ambiente Kinect. Essas duas imagens não são equivalentes, pois há alguma distância entre o emissor IR e o sensor de profundidade IR. Essas duas imagens são consideradas como correspondência para diferentes câmeras e permitem a aplicação de triangulação estéreo para calcular a profundidade como mostrado na imagem \ref{fig:trilatStereo}. Essa imagem demonstra como $x1$ e $x2$ são medidos usando a triangulação estéreo para um ponto $X$ na cena.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.4\textwidth]{images/trilateracao_estereo.png}
+\caption{Trilateração estéreo para cálculo de profundidade.}
+\label{fig:trilatStereo}
+\end{figure}
+
+o \textit{Depth Data Stream} lê os pontos na cena, processa os dados e envia a informação de profundidade a partir da qual eles foram refletidos, para o \textit{Recognition Stream}. Nele, é identificado o sensor \textit{Kinect} conectado e é ativado o canal do fluxo de profundidade:
+
+\begin{minted}{csharp}
+this.sensor = KinectSensor.KinectSensors[0];
+this.sensor.DepthStream.Enable(
+  DepthImageFormat.Resolution640x480Fps30);
+\end{minted}
+
+A classe \textit{ImageStream} possui o método \textit{Enable()} sobrecarregado. Por padrão, o sensor permite o fluxo de profundidade com o formato de imagem de profundidade de resolução 640x480 \textit{pixels} e 30 frames por segundo (\textit{Resolution640x480Fps30}).
+
+Uma vez que o sensor é identificado e o fluxo de profundidade está habilitado, é anexado o manipulador de eventos \textit{DepthFrameReady} a um evento que é gerado cada vez que um novo \textit{frame} de profundidade está disponível:
+
+\begin{minted}{csharp}
+sensor.DepthFrameReady +=
+  new EventHandler
+  <DepthImageFrameReadyEventArgs>
+    (sensor_DepthFrameReady);
+\end{minted}
+
+
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{images/sdk_architecture_color.png}
+\caption{Arquitetura do SDK}
+\label{fig:sdk_architecture_color}
+\end{figure*}
 
 \subsubsection{Skeleton recognizer }\label{sec:skeleton}
 processing joints
 
 \subsubsection{Depth Data Processing (Recognition Stream - Filter)}\label{sec:depthDataProcessing}
-processing data stream
+\textcolor{red}{processing data stream}
+O manipulador de eventos \textit{DepthFrameReady} invoca com \textit{DepthImageFrameReadyEventArgs}, que possui o método \textit{OpenDepthImageFrame()} para retornar o quadro de imagem de profundidade atual enviado pelo sensor. O  método padrão para \textit{DepthFrameReady} é o \textit{SensorDepthFrameReady}. Nesse método, é recuperado o quadro de imagem em profundidade, usando o método \textit{OpenDepthImageFrame ()}, o qual retorna os dados de profundidade brutos do sensor. \textit{PixelData} cria o tamanho do \textit{buffer} para o quadro de imagem de profundidade de entrada.
+
+O \textit{frame} de profundidade possui propriedades semelhantes que copiam os dados de \textit{pixels} para o \textit{buffer} recém-criado. \textit{CopyPixelDataTo()} é usado para copiar o \textit{array} de bytes de dados de \textit{pixels} do quadro de imagem atualmente recebido para o \textit{buffer}. Antes de copiar os dados de \textit{pixels}, primeiro é calculado o tamanho do \textit{buffer} usando a propriedade \textit{PixelDataLength} e, em seguida, é copiada a mesma imagem do \textit{array} de bytes como \textit{DepthImageFrame}. Como o quadro bruto de imagem de profundidade é uma imagem em escala de cinza de 16 \textit{bits}, \textit{PixelFormats} é especificado  como \textit{Gray16} ao criar a fonte de \textit{bitmap} para o controle de imagem em profundidade.
+
+\textcolor{red}{adicionar aqui os metodos de filtro e segmentação...}
+Finalmente, é criado o objeto \textit{BitmapSource} e atribuído ao controle de imagem \textit{depthImageControl}, que está definido no arquivo XAML para exibir os dados do fluxo.
+
 
 
 

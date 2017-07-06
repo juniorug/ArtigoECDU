@@ -1,13 +1,29 @@
 \section{Conclusão}\label{sec:conclusao}
 
-O presente trabalho propõe implementar e avaliar a eficiência\textcolor{red}{nao tinha se falado em eficiencia em momento algum. vai medir eficiencia ou eficacia} de um sistema que utilize técnicas visuais e não visuais com o objetivo de detectar e rastrear pessoas em um ambiente fechado. Para tal, será utilizado o kinect \textcolor{red}{apresentar o kinect/rfid ja na introducao. a partir da secao de solucao vc fala bastante dele} como sensor visual e sensores de RFID e IR como sensores não visuais.
+Sistemas e aplicações de localização interior tem experimentado nos últimos anos esforços adicionais com o aparecimento da computação ubíqua. Em vários cenários, objetos e pessoas precisam ser localizados ou monitorados. Por exemplo, em uma indústria ou ambiente médico. Além disso, a localização das pessoas viabiliza a criação de um grande número de aplicações e serviços. Clientes e funcionários podem ser observados, intrusos detectados, idosos suportados e pacientes monitorados. Em locais públicos, como estações de metrô, a segurança pode ser abordada por um sistema de orientação de emergência. Sistemas que utilizam as informações de orientação alimentada com o posicionamento dos seres humanos podem trabalhar de forma mais eficiente do que um sistema estático. 
 
-Essa abordagem híbrida permite minimizar as deficiências que cada uma dessas técnicas possuem, quando trabalhando de maneira isolada.
+O presente trabalho implementa um sistema que utiliza técnicas visuais com o objetivo de detectar pessoas em um ambiente fechado. Para tal, foi utilizado o \textit{Kinect} como sensor visual. A ferramenta desenvolvida utiliza o mapa de profundidade gerado pelo sistema de câmeras do \textit{Kinect} aplicando sobre essa fonte de dados algoritmos de filtro e segmentação visando a correta identificação de indivíduos em determinado âmbito.
+Com essas características, as principais contribuições são:
 
-Sua estrutura arquitetural dividida em módulos permite a fácil alteração dos componentes, sem causar impacto nos outros  elementos da solução. 
+\begin{enumerate}
+    \item Baixo custo de \textit{hardware}, se comparado o \textit{Kinect} com os principais \textit{scanners} 3D do mercado;  
+    \item Exportação de dados de localização dos sujeitos dentro do ambiente monitorado para que plataformas externas possam consumí-los;
+    \item Eficiência, se comparado com projetos de detecção que utilizam técnicas visuais 2D e abordagens híbridas;
+    \item \textit{less intrusiveness}, pois apenas o mapa de profundidade é exibido, se compararmos com sistemas que utilizam câmeras RGB. 
+\end{enumerate}
 
-\subsection{Limitações deste Trabalho}
-Este trabalho não contempla a avaliação da velocidade a qual pessoas se movimentam num determinado ambiente, limitando-se a identificar posição e sentido de movimentação do objeto de estudo.
+Sua estrutura arquitetural dividida em camadas e módulos, seguindo o estilo \textit{Pipe and Filter} permite a fácil alteração dos componentes, sem causar impacto nos outros  elementos da solução. 
+
+
+\textcolor{red}{ADICIONAR AQUI OS RESULTADOS OBTIDOS}
+
+
+
+\subsection{Limitações deste Trabalho}\label{sec:limitacoes}
+Este trabalho não contempla a avaliação da velocidade nem direção/sentido ao qual pessoas se movimentam, limitando-se a identificar a posição do objeto de estudo num determinado ambiente.
+Outra limitação refere-se ao limite de distância ao qual o \textit{Kinect} é capaz de identificar objetos e pessoas, pois a versão um do mesmo possui \textit{range} entre 0,8 e 4 metros. Ainda, uma outra limitação do hardware em uso é a quantidade máxima de seis pessoas a serem identificadas, por ambiente.
 
 \subsection{Trabalhos Futuros}
-Como trabalhos futuros, podem-se aplicar outras técnicas de processamento e detecção de pessoas, estimando e comparando o nível de eficácia da solução. Outra abordagem seria a substituição dos sensores não visuais, como por exemplo pisos táteis ou sensores ultrassônicos.
+Como trabalhos futuros, podem-se aplicar outras técnicas de processamento e detecção de pessoas, estimando e comparando o nível de eficácia da solução. Outra abordagem seria a adição de sensores não visuais, como por exemplo pisos táteis ou sensores ultrassônicos.
+
+Para as restrições do \textit{hardware} citados na subseção \ref{sec:limitacoes} pode-se tanto adicionar outros \textit{Kinects} quanto substituir o \textit{Kinect} V1 pela segunda versão do mesmo, melhorando assim a Acurácia, precisão e \textit{range} da solução.
