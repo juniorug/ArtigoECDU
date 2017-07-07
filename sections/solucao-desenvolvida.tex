@@ -80,7 +80,7 @@ O SDK fornece uma biblioteca e ferramentas de software sofisticadas para ajudar 
 \subsubsection{Depth Data Stream}\label{sec:depthDataStream}
 \textcolor{red}{capturing data stream}
 
-Quando se trata do Kinect, há apenas uma imagem, que é capturada pelo sensor de profundidade IR. Então, como funciona a triangulação estéreo? Na verdade, existem duas imagens em vez de uma. A segunda imagem é invisível - é um padrão do emissor IR, já definido com o laser IR. O laser IR não é modulado. Tudo o que o laser faz é projetar um padrão pseudo-aleatório de especificações no ambiente Kinect. Essas duas imagens não são equivalentes, pois há alguma distância entre o emissor IR e o sensor de profundidade IR. Essas duas imagens são consideradas como correspondência para diferentes câmeras e permitem a aplicação de triangulação estéreo para calcular a profundidade como mostrado na imagem \ref{fig:trilatStereo}. Essa imagem demonstra como $x1$ e $x2$ são medidos usando a triangulação estéreo para um ponto $X$ na cena.
+Quando se trata do Kinect, há apenas uma imagem, que é capturada pelo sensor de profundidade IR. Então, como funciona a triangulação estéreo? Na verdade, existem duas imagens em vez de uma. A segunda imagem é invisível - é um padrão do emissor IR, já definido com o laser IR. O laser IR não é modulado. Tudo o que o laser faz é projetar um padrão pseudo-aleatório de especificações no ambiente Kinect. Essas duas imagens não são equivalentes, pois há alguma distância entre o emissor IR e o sensor de profundidade IR. Essas duas imagens são consideradas como correspondência para diferentes câmeras e permitem a aplicação de triangulação estéreo para calcular a profundidade como mostrado na imagem \ref{fig:trilatStereo}. Essa imagem demonstra como $x1$ e $x2$ são medidos usando a triangulação estéreo para um ponto $X$ na cena. 
 
 \begin{figure}[!h]
 \centering
@@ -89,7 +89,17 @@ Quando se trata do Kinect, há apenas uma imagem, que é capturada pelo sensor d
 \label{fig:trilatStereo}
 \end{figure}
 
-o \textit{Depth Data Stream} lê os pontos na cena, processa os dados e envia a informação de profundidade a partir da qual eles foram refletidos, para o \textit{Recognition Stream}. Nele, é identificado o sensor \textit{Kinect} conectado e é ativado o canal do fluxo de profundidade:
+Em um dado pixel $x$, a funcionalidade computa: 
+
+
+\begin{align}
+{f_{\theta}}(I, x) = d_{I}  \left(x + \frac{\boldsymbol{u}}{d_{I}(x)}\right) -  d_{I} \left(x + \frac{\boldsymbol{v}}{d_{I}(x)}\right) ,
+\label{eq1}
+\end{align}
+
+Onde $d_{I}(x)$ é a profundidade do pixel $x$ na imagem $I$ e os parâmetros $\theta = (\boldsymbol{u,v})$ descreve os \textit{offsets} $\boldsymbol{u}$ e $\boldsymbol{v}$. A normalização dos \textit{offsets} por $\frac{1}{d_{I}(x)}$ garante que os recursos sejam invariantes de profundidade: em um determinado ponto do corpo, um deslocamento de espaço fixo resultará se o pixel está próximo ou longe da câmera. Os recursos são, portanto, invariantes de translação 3D (efeitos de perspectiva de módulo). Se um \textit{pixel} deslocado estiver no fundo ou fora dos limites da imagem, a sonda de profundidade $d_{I}(x')$ recebe um grande valor constante positivo.
+
+o \textit{Depth Data Stream} lê os pontos na cena, processa os dados, de acordo com a equação \ref{eq1} e envia a informação de profundidade a partir da qual eles foram refletidos, para o \textit{Recognition Stream}. Nele, é identificado o sensor \textit{Kinect} conectado e é ativado o canal do fluxo de profundidade:
 
 \begin{minted}{csharp}
 this.sensor = KinectSensor.KinectSensors[0];
