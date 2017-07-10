@@ -76,6 +76,26 @@ O SDK fornece uma biblioteca e ferramentas de software sofisticadas para ajudar 
 \subsection{Componentes principais}\label{sec:componentes}
 
 \subsubsection{Color Data Stream}\label{sec:colorDataStream}
+O \textit{Kinect} SDK fornece uma classe base abstrata \textit{ImageStream}. Essa classe é implementada tanto pelas classes de \textit{stream} de cores quanto de profundidade. Para a classe \textit{ColorImageStream}, o fluxo é realizado pelos seguintes passos: ativa o fluxo, captura o fluxo quadro a quadro no aplicativo e processsa os quadros de imagens recebidas.
+
+Quando o sensor está em execução, e o fluxo de cores está habilitado, o fluxo irá inicializar o sensor \textit{Kinect} para gerar um fluxo de imagens coloridas. A próxima etapa do fluxo é informar ao sensor o que fazer quando for capturado um novo \textit{frame} de imagem. Para tal, é utilizado um manipulador de eventos que deve ser anexado ao canal do fluxo do sensor. O método \textit{ColorStream.Enable} é um método sobrecarregado que por \textit{default} não recebe argumento, gerando uma resolução de  640x480 \textit{pixels} a 30Fps. Essa resolução default é a utilizada nesse projeto. A classe \textit{KinectSensor} possui um evento \textit{ColorFrameReady}, que é invocado sempre que há novo quadro enviado pelo sensor. O manipulador de eventos possui dois argumentos: o primeiro é um remetente e o segundo um \textit{ColorImageFrameReadyEventArgs}.
+
+\begin{minted}{csharp}
+this.sensor = KinectSensor.KinectSensors.
+  FirstOrDefault(sensorItem => 
+  sensorItem.Status == 
+  KinectStatus.Connected);
+this.StartSensor();
+this.sensor.ColorStream.Enable();
+this.sensor.ColorFrameReady += 
+  sensor_ColorFrameReady;
+\end{minted}
+
+
+Uma vez que o manipulador de eventos é chamado, significa que há um novo quadro que foi enviado pelo sensor e é hora de processá-lo. Os argumentos do evento para este manipulador de eventos expõem um método \textit{OpenColorImageFrame()} que retorna um \textit{frame} de imagem do tipo \textit{ColorImageFrame}. Com isso, o controle da aplicação se move para o Manipulador de eventos \textit{sensor\_ColorFrameReady} responsável por designar os dados da camera RGB para o devido  processamento do quadro de imagem no \textit{Skeleton Recognizer}. 
+
+
+
 
 \subsubsection{Depth Data Stream}\label{sec:depthDataStream}
 \textcolor{red}{capturing data stream}
@@ -99,19 +119,16 @@ Em um dado pixel $x$, a funcionalidade computa:
 
 Onde $d_{I}(x)$ é a profundidade do pixel $x$ na imagem $I$ e os parâmetros $\theta = (\boldsymbol{u,v})$ descreve os \textit{offsets} $\boldsymbol{u}$ e $\boldsymbol{v}$. A normalização dos \textit{offsets} por $\frac{1}{d_{I}(x)}$ garante que os recursos sejam invariantes de profundidade: em um determinado ponto do corpo, um deslocamento de espaço fixo resultará se o pixel está próximo ou longe da câmera. Os recursos são, portanto, invariantes de translação 3D (efeitos de perspectiva de módulo). Se um \textit{pixel} deslocado estiver no fundo ou fora dos limites da imagem, a sonda de profundidade $d_{I}(x')$ recebe um grande valor constante positivo.
 
-o \textit{Depth Data Stream} lê os pontos na cena, processa os dados, de acordo com a equação \ref{eq1} e envia a informação de profundidade a partir da qual eles foram refletidos, para o \textit{Recognition Stream}. Nele, é identificado o sensor \textit{Kinect} conectado e é ativado o canal do fluxo de profundidade:
-
-\begin{minted}{csharp}
-this.sensor = KinectSensor.KinectSensors[0];
-this.sensor.DepthStream.Enable(
-  DepthImageFormat.Resolution640x480Fps30);
-\end{minted}
+o \textit{Depth Data Stream} lê os pontos na cena, processa os dados, de acordo com a equação \ref{eq1} e envia a informação de profundidade a partir da qual eles foram refletidos, para o \textit{Recognition Stream}. Nele, é identificado o sensor \textit{Kinect} conectado e é ativado o canal do fluxo de profundidade.
 
 A classe \textit{ImageStream} possui o método \textit{Enable()} sobrecarregado. Por padrão, o sensor permite o fluxo de profundidade com o formato de imagem de profundidade de resolução 640x480 \textit{pixels} e 30 frames por segundo (\textit{Resolution640x480Fps30}).
 
 Uma vez que o sensor é identificado e o fluxo de profundidade está habilitado, é anexado o manipulador de eventos \textit{DepthFrameReady} a um evento que é gerado cada vez que um novo \textit{frame} de profundidade está disponível:
 
 \begin{minted}{csharp}
+this.sensor = KinectSensor.KinectSensors[0];
+this.sensor.DepthStream.Enable(
+  DepthImageFormat.Resolution640x480Fps30);
 sensor.DepthFrameReady +=
   new EventHandler
   <DepthImageFrameReadyEventArgs>
@@ -126,8 +143,6 @@ sensor.DepthFrameReady +=
 \label{fig:sdk_architecture_color}
 \end{figure*}
 
-\subsubsection{Skeleton recognizer }\label{sec:skeleton}
-processing joints
 
 \subsubsection{Depth Data Processing (Recognition Stream - Filter)}\label{sec:depthDataProcessing}
 \textcolor{red}{processing data stream}
@@ -136,10 +151,40 @@ O manipulador de eventos \textit{DepthFrameReady} invoca com \textit{DepthImageF
 O \textit{frame} de profundidade possui propriedades semelhantes que copiam os dados de \textit{pixels} para o \textit{buffer} recém-criado. \textit{CopyPixelDataTo()} é usado para copiar o \textit{array} de bytes de dados de \textit{pixels} do quadro de imagem atualmente recebido para o \textit{buffer}. Antes de copiar os dados de \textit{pixels}, primeiro é calculado o tamanho do \textit{buffer} usando a propriedade \textit{PixelDataLength} e, em seguida, é copiada a mesma imagem do \textit{array} de bytes como \textit{DepthImageFrame}. Como o quadro bruto de imagem de profundidade é uma imagem em escala de cinza de 16 \textit{bits}, \textit{PixelFormats} é especificado  como \textit{Gray16} ao criar a fonte de \textit{bitmap} para o controle de imagem em profundidade.
 
 \textcolor{red}{adicionar aqui os metodos de filtro e segmentação...}
+
+
+ Na imagem de profundidade gerada pelo \textit{Kinect}, todos os pontos que o sensor não consegue medir a profundidade são deslocados para 0 no \textit{array} de saída. Considerando  como um tipo de ruído, Para evitar sua interferência, é necessário recuperar seu verdadeiro valor de profundidade. Supondo que o espaço seja contínuo, o mais provável é que o ponto faltante tenha um valor de profundidade semelhante aos seus vizinhos. Com esta suposição, todos os 0 \textit{pixels} são considerados como vagos e precisam ser preenchidos. É utilizado então o algoritmo de interpolação vizinho mais próximo para preencher esses \textit{pixels} e obter uma matriz de profundidade que tenha valores significativos em todos os \textit{pixels}. Em seguida, é utilizado o filtro mediano com uma janela 4 x 4 na matriz de profundidade para tornar os dados suaves.
+
+O filtro mediano é uma técnica de filtragem digital não-linear, usada frequentemente para remover o ruído de uma imagem ou sinal. Essa redução de ruído é um passo de pré-processamento típico para melhorar os resultados do processamento posterior (segmentação da uma imagem). A filtragem média é amplamente utilizada no processamento de imagens digitais porque, sob certas condições, preserva bordas ao mesmo tempo que remove o ruído. A idéia principal do filtro mediano é percorrer a entrada do sinal por entrada, substituindo cada entrada pela mediana das entradas vizinhas. O padrão de vizinhos é chamado de "janela", que desliza, entrada por entrada, em todo o sinal. usando um tamanho de janela de três com uma entrada imediatamente anterior e seguindo cada entrada, um filtro mediano é aplicado ao  sinal, como exemplificado, para um conjunto de \textit{pixesls} $x = [2\,80\, 6 \,3]$:
+
+\begin{align*}
+x = [2\,\, 80\,\, 6 \,3]\MoveEqLeft[23]\\
+y[1] = Mediana[2\,\, 2\,\, 80] = 2\MoveEqLeft[16.7]\\
+y[2] = Mediana[2\,\, 80\,\, 6] = Mediana[2\,\, 6\,\, 80] = 6\MoveEqLeft[8]\\
+y[3] = Mediana[80\,\, 6\,\, 3] = Mediana[3\,\, 6\,\, 80] = 6\MoveEqLeft[8]\\
+y[4] = Mediana[6\,\, 3\,\, 3] = Mediana[3\,\, 3\,\, 6] = 3\MoveEqLeft[9]\\
+y = [2\,\, 6\,\, 6\,\, 3]\MoveEqLeft[23].
+\end{align*}
+
 Finalmente, é criado o objeto \textit{BitmapSource} e atribuído ao controle de imagem \textit{depthImageControl}, que está definido no arquivo XAML para exibir os dados do fluxo.
 
+
+\subsubsection{Skeleton recognizer }\label{sec:skeleton}
+processing joints
+
+Obter imagem segmentada em profundidade do assunto usando o mapa de profundidade do \textit{Kinect}, já processados pelos filtros. Remover pequenas \textit{blobs}. Obter posições candidatas para a cabeça e a parte superior do corpo utilizando o detector da parte superior do corpo. Corrigir os pontos de cabeça, pescoço e ombro usando os retângulos delimitadores obtidos no passo anterior e dados antropométricos. Calcular a Transformação de Distância Estendida para a imagem de profundidade segmentada. Iniciar uma busca angular para os melhores valores de EDT em torno das articulações do ombro para articulações do cotovelo. Corrige as articulações do cotovelo e levá-las como referência repita o procedimento acima para encontrar a articulação do pulso \textcolor{red}{ver referencia, esta comentada aqui... %(https://people.eecs.berkeley.edu/~akar/IITK_website/cs397/Kinect%20Talk.pdf)
+}
+
+
+O sensor Kinect retorna os dados brutos de profundidade, onde cada pixel contém um valor que representa a distância entre o sensor e o objeto. Os dados de profundidade fornecem possibilidades ilimitadas. Para essa solução, foi necessário obter controle usando o movimento do corpo. Primeiramente é necessário capturar a informação sobre os usuários que estão na frente do Kinect e, a partir desse momento, identificar o mapeamento do esqueleto na imagem.
+
+O recurso completo de rastreamento do esqueleto é construído com base em algoritmos de processamento de dados em profundidade, aprendizado de máquina interna e algoritmos de visão colorida. Usando o rastreamento do esqueleto, o sensor \textit{Kinect} pode rastrear o corpo humano com vários pontos de junção (\textit{joint points}). Usando o \textit{Kinect} é possível detectar até seis indivíduos e até 20 \textit{joints} para cada um deles.
 
 
 
 \subsubsection{Face Recognition (Recognition Stream )}\label{sec:depthDataRecognition}
 processing data stream
+
+
+\subsubsection{Main Window (GUI)}\label{sec:mainWindow}
+presentating depth map
