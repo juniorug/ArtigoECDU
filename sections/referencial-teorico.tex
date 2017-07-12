@@ -226,3 +226,28 @@ A nuvem de pontos é uma estrutura de dados usada para representar uma coleção
 Triangulação estéreo é um algoritmo de análise para calcular a posição 3D de pontos em um quadro de imagem. Em geral, triangulação estéreo, duas imagens são usadas para obter as duas visualizações diferentes em uma cena, de forma semelhante à visão binocular humana. Ao comparar essas duas imagens, a informação de profundidade relativa é calculada \cite{kinect4Windows}. 
 
 Este trabalho, utiliza uma recente abordagem sensorial: a utilização de mapas de profundidade para a detecção de presença em um ambiente interno. Tratando-se de um sistema biométrico, do tipo físico, tendo como características desse tipo de sistema: não cooperativa, sigilosa, não habituado, não auxiliado e \textit{less intrusive}. A partir de tecnologias visuais, livre de marcador, o SDK utiliza processos de triangulação estéreo para extração do mapa de profundidade, calculando a partir desse, a posição física dos indivíduos.
+
+\subsubsection{Inferência de partes do corpo e sugestão de \textit{joints}}\label{sec:bodyProposal}
+
+Uma contribuição fundamental do trabalho realizado pela \textit{Microsoft} \cite{Shotton:2013:RHP:2398356.2398381} no desenvolvimento do \textit{Kinect} SDK é a representação parcial de partes do corpo. São Definidos vários rótulos de partes localizadas de um individuo, que cobrem densamente o corpo, como codificado por cores na Figura \ref{fig:bodyparts}. Algumas dessas partes são definidas para localizar diretamente as articulações esqueléticas de interesse, enquanto outras preenchem as lacunas ou podem ser usadas em combinação para prever outras articulações.
+
+As partes são especificadas em um mapa de textura que é retornado para diminuir os vários caracteres durante a renderização. Os pares de imagem e profundidade da parte do corpo são usados como dados totalmente rotulados
+para o aprendizado do algoritmo classificador. Para os experimentos foram usadas 31 partes do corpo (E-Esquerda, D-Direita, S-Superior, I-Inferior): cabeça (ES, DS, EI, DI), pescoço, ombro (E, D), braço (ES, DS, EI, DI),cotovelo (E, D), pulso (E, D), mão (E, D), torso (ES, DS, EI, DI), perna (ES, DS, EI, DI), joelho (E, D), tornozelo (E, D) e pé (E, D). Partes distintas para esquerda e direita permitem ao classificador desambiguar os lados esquerdo e direito do corpo \cite{Shotton:2013:RHP:2398356.2398381}.
+
+\begin{figure*}[ht]
+\centering
+\includegraphics[resolution=300,width=1.0\textwidth,natwidth=610,natheight=642]{images/body_parts.png}
+    \caption{Dados sintéticos e reais. Pares de imagens de produndidade e partes verdadeiras do corpo, com grande variedade de pose, forma, roupa e cortes \cite{Shotton:2013:RHP:2398356.2398381}.}
+    \label{fig:bodyparts}
+\end{figure*}
+
+\paragraph{Florestas de decisão aleatória }\label{sec:forests}
+As árvores e florestas de decisão aleatória [35, 30, 2, 8] demonstraram classificações rápidas e eficazes para várias tarefas [20, 23, 36], e podem ser implementadas de forma eficiente na GPU [34]. Conforme ilustrado na Fig. 4, uma floresta é um conjunto de árvores de decisão $T$, cada uma constituída por nós de divisão e folhas. Cada nó dividido consiste em uma característica ${f_{\theta}}$ e um limite $\tau$. Para classificar o pixel $x$ na imagem $I$, um começa na raiz e avalia repetidamente a equação \ref{eq:eq1} \textcolor{red}{MOVER EQUACAO 1 DA PARTE PRATICA PARA O REFERENCIAL TEORICO}, ramificando para a esquerda ou para a direita de acordo com a comparação com o limite $\tau$. No nó da folha alcançado na árvore $t$, uma distribuição aprendida $P_{t} (c | I, x)$ sobre as etiquetas das partes do corpo $c$ é armazenada. As distribuições são calculadas em média para todas as árvores na floresta para dar a classificação final.
+
+\begin{align}
+P(c | I, x) = \frac{1}{T} \sum_{t=1}^{T} P_{t} (c | I, x).
+\label{eq:eq2}
+\end{align}
+
+\textcolor{red}{PAREI NA FORMULA ACIMA, NA REFERENCIA ABAIXO (COMENTADA)}
+%https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/BodyPartRecognition.pdf
