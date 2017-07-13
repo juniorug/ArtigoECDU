@@ -146,7 +146,7 @@ A trilateração é uma técnica para calcular uma posição de um objeto $m$, t
 
 
 
- \begin{figure}[h]
+ \begin{figure}[ht]
 \centering
     \includegraphics[resolution=300,width=0.39\textwidth,natwidth=610,natheight=642]{images/trilateracao.png}
     \caption{Esquema de Trilateração.}
@@ -156,7 +156,7 @@ A trilateração é uma técnica para calcular uma posição de um objeto $m$, t
 
 \begin{figure*}[ht]
 \centering
-\includegraphics[resolution=300,width=0.7\textwidth,natwidth=610,natheight=642]{images/triangulacao.png}
+\includegraphics[resolution=300,width=0.65\textwidth,natwidth=610,natheight=642]{images/triangulacao.png}
     \caption{Esquemas de triangulação.}
     \label{fig:triang}
 \end{figure*}
@@ -190,7 +190,7 @@ O reconhecimento de faces e mais vantajoso nesse aspecto, pois é possível real
  
 O Kinect (Fig.~\ref{fig:kinect}) é um sensor de movimento, projetado pela Microsoft Inc. e lançado em novembro de 2010 para ser usado como controle remoto para o console de videogames Xbox 360. É composto por vários sensores (Fig. ~\ref{fig:kinect}): Uma câmera RGB (Color CMOS, VNA38209015), uma câmera de profundidade composta por um projetor de infravermelho(\textit{infrared} - IR) (OG12 / 0956 / D306 / JG05A) combinado a uma câmera de infravermelho (IR CMOS, Microsoft / X853750001 / VCA379C7130) e uma série de quatro microfones. A câmera infravermelha e a câmera colorida têm uma definição de 640 x 480 pixels. O ângulo de visão é $60\,^{\circ}$ horizontal e $45\,^{\circ}$ vertical. O dispositivo foi projetado para ser usado em uma faixa de 0,5 m a 5 m \cite{sevrin2015characterization}. A tabela \ref{table:comparativoScanners} apresenta um comparativo entre o Kinect e os \textit{scanners} 3D mais utilidados.
 
- \begin{figure}[h]
+ \begin{figure}[ht]
 \centering
     \includegraphics[resolution=300,width=0.4\textwidth,natwidth=610,natheight=642]{images/kinect.png}
     \caption{O Sensor Microsoft Kinect.}
@@ -198,7 +198,7 @@ O Kinect (Fig.~\ref{fig:kinect}) é um sensor de movimento, projetado pela Micro
 \end{figure}
 
 
- \begin{table}[h]
+ \begin{table}[ht]
  \caption{Comparação entre diferentes \textit{scanners} 3D \cite{li2013using}.\newline A velocidade é expressada em segundos, tamanho em polegadas, preço em USD e a acurácia é uma aproximação expressada em mm.}
  \label{table:comparativoScanners}
  \begin{tabular}{|l|c|c|c|c|c|}
@@ -218,14 +218,23 @@ O Kinect (Fig.~\ref{fig:kinect}) é um sensor de movimento, projetado pela Micro
  \subsubsection{Câmera de profundidade (\textit{Depth-camera})}\label{sec:depth}
 A câmera de profundidade é um dispositivo que pode detectar diretamente o alcance da superfície física mais próxima em cada pixel. A câmera de profundidade é única porque possibilita a modelagem 3D em tempo real da geometria da superfície. As câmeras de profundidade oferecem várias vantagens em relação aos sensores de intensidade tradicionais, trabalhando em baixos níveis de luz, fornecendo uma estimativa de escala calibrada, sendo invariante de cores e texturas e resolvendo ambiguidades de silhueta em pose. Eles também simplificam muito alguns difíceis problemas de visão computaconal, como a remoção de fundo falso em uma aplicação de videoconferência \cite{wilson2010combining}. Além disso, é capaz de sintetizar imagens de profundidade realistas de pessoas e, assim, criar um grande conjunto de dados de treinamento, com baixo custo. Algumas das tecnologias usadas para obter informações de profundidade da câmera em profundidade são luz infravermelha e estruturada de tempo de vôo (\textit{time-of-flight}) \cite{bogomjakov2006free}.
 
+O trabalho de Jamie Shotton et. al\cite{Shotton:2013:RHP:2398356.2398381} emprega simples recursos de comparação de profundidade, inspirados por aqueles em \cite{lepetit2005randomized}. Em um dado pixel $x$, a funcionalidade computa: 
+
+\begin{align}
+{f_{\theta}}(I, x) = d_{I}  \left(x + \frac{\boldsymbol{u}}{d_{I}(x)}\right) -  d_{I} \left(x + \frac{\boldsymbol{v}}{d_{I}(x)}\right) ,
+\label{eq:eq1}
+\end{align}
+
+Onde $d_{I}(x)$ é a profundidade do pixel $x$ na imagem $I$ e os parâmetros $\theta = (\boldsymbol{u,v})$ descreve os \textit{offsets} $\boldsymbol{u}$ e $\boldsymbol{v}$. A normalização dos \textit{offsets} por $\frac{1}{d_{I}(x)}$ garante que os recursos sejam invariantes de profundidade: em um determinado ponto do corpo, um deslocamento de espaço fixo resultará se o pixel está próximo ou longe da câmera. Os recursos são, portanto, invariantes de translação 3D (efeitos de perspectiva de módulo). Se um \textit{pixel} deslocado estiver no fundo ou fora dos limites da imagem, a sonda de profundidade $d_{I}(x')$ recebe um grande valor constante positivo.
+
+
+
 
 \subsubsection{Nuvem de pontos (\textit{Depth-camera})}\label{sec:nuvem}
 A nuvem de pontos é uma estrutura de dados usada para representar uma coleção de pontos multi-dimensionais e é comumente usada para representar dados tridimensionais. Em uma nuvem de pontos 3D, os pontos geralmente representam as coordenadas geométricas $X$, $Y$ e $Z$ de uma superfície subjacente amostrada. Quando as informações de cor estão presentes, a nuvem torna-se ponto 4D \cite{gustavo2014Localizacao}.
 
 \subsubsection{Triangulação estéreo }\label{sec:steroTriang}
 Triangulação estéreo é um algoritmo de análise para calcular a posição 3D de pontos em um quadro de imagem. Em geral, triangulação estéreo, duas imagens são usadas para obter as duas visualizações diferentes em uma cena, de forma semelhante à visão binocular humana. Ao comparar essas duas imagens, a informação de profundidade relativa é calculada \cite{kinect4Windows}. 
-
-Este trabalho, utiliza uma recente abordagem sensorial: a utilização de mapas de profundidade para a detecção de presença em um ambiente interno. Tratando-se de um sistema biométrico, do tipo físico, tendo como características desse tipo de sistema: não cooperativa, sigilosa, não habituado, não auxiliado e \textit{less intrusive}. A partir de tecnologias visuais, livre de marcador, o SDK utiliza processos de triangulação estéreo para extração do mapa de profundidade, calculando a partir desse, a posição física dos indivíduos.
 
 \subsubsection{Inferência de partes do corpo e sugestão de \textit{joints}}\label{sec:bodyProposal}
 
@@ -242,12 +251,43 @@ para o aprendizado do algoritmo classificador. Para os experimentos foram usadas
 \end{figure*}
 
 \paragraph{Florestas de decisão aleatória }\label{sec:forests}
-As árvores e florestas de decisão aleatória [35, 30, 2, 8] demonstraram classificações rápidas e eficazes para várias tarefas [20, 23, 36], e podem ser implementadas de forma eficiente na GPU [34]. Conforme ilustrado na Fig. 4, uma floresta é um conjunto de árvores de decisão $T$, cada uma constituída por nós de divisão e folhas. Cada nó dividido consiste em uma característica ${f_{\theta}}$ e um limite $\tau$. Para classificar o pixel $x$ na imagem $I$, um começa na raiz e avalia repetidamente a equação \ref{eq:eq1} \textcolor{red}{MOVER EQUACAO 1 DA PARTE PRATICA PARA O REFERENCIAL TEORICO}, ramificando para a esquerda ou para a direita de acordo com a comparação com o limite $\tau$. No nó da folha alcançado na árvore $t$, uma distribuição aprendida $P_{t} (c | I, x)$ sobre as etiquetas das partes do corpo $c$ é armazenada. As distribuições são calculadas em média para todas as árvores na floresta para dar a classificação final.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[resolution=300,width=0.45\textwidth,natwidth=610,natheight=642]{images/tree_decision.png}
+    \caption{\textbf{Florestas de decisão aleatória}. Uma floresta é um conjunto de árvores. Cada árvore consiste em nós divididos (azul) e nós folha (verde). As setas vermelhas indicam os caminhos diferentes que podem ser tomadas por árvores diferentes para uma entrada específica \cite{Shotton:2013:RHP:2398356.2398381}.}
+    \label{fig:decisionTree}
+\end{figure}
+
+As árvores e florestas de decisão aleatória \cite{quinlan1986induction, shepherd1983appraisal, amit1997shape, breiman2001random} demonstraram classificações rápidas e eficazes para várias tarefas \cite{lepetit2005randomized, moosmann2007fast, shotton2008semantic}, e podem ser implementadas de forma eficiente na GPU \cite{sharp2008implementing}. Conforme ilustrado na figura \ref{fig:decisionTree}, uma floresta é um conjunto de árvores de decisão $T$, cada uma constituída por nós de divisão e folhas. Cada nó dividido consiste em uma característica ${f_{\theta}}$ e um limite $\tau$. Para classificar o pixel $x$ na imagem $I$, um começa na raiz e avalia repetidamente a equação \ref{eq:eq1}, ramificando para a esquerda ou para a direita de acordo com a comparação com o limite $\tau$. No nó da folha alcançado na árvore $t$, uma distribuição aprendida $P_{t} (c | I, x)$ sobre as etiquetas das partes do corpo $c$ é armazenada. As distribuições são calculadas em média para todas as árvores na floresta para dar a classificação final.
 
 \begin{align}
 P(c | I, x) = \frac{1}{T} \sum_{t=1}^{T} P_{t} (c | I, x).
 \label{eq:eq2}
 \end{align}
 
-\textcolor{red}{PAREI NA FORMULA ACIMA, NA REFERENCIA ABAIXO (COMENTADA)}
-%https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/BodyPartRecognition.pdf
+Cada árvore é treinada em um conjunto diferente de imagens sintetizadas aleatoriamente. Um subconjunto aleatório de 2000 exemplos de pixels de cada imagem é escolhido para assegurar uma distribuição aproximadamente igual em partes do corpo. Cada árvore é treinada usando o seguinte algoritmo: 
+
+\begin{enumerate}
+    \item Propor aleatoriamente um conjunto de candidatos divididos $\phi = ({\theta}, \tau)$ (Caracterizar os parâmetros $\theta$ e os limiares $\tau$ );
+    \item Particionar o conjunto de exemplos $Q = \{(I, x)\}$ nos subconjuntos esquerdo e direito por cada $\phi$:
+    
+        \begin{align}
+            Q_{1}(\phi) = \{\,(I, x)\,|\, {f_{\theta}}(I, x) < \tau\,\} \\
+            Q_{r}(\phi) = Q\, \textbackslash \,Q_{1}(\phi) \MoveEqLeft[5.1] 
+            \label{eq:eq3_4}
+        \end{align}
+    \item Calcule o $\phi$ Dando o maior ganho de informação:
+    \begin{align}
+            \phi^* &= \operatornamewithlimits{argmax}_\phi G(\phi) \\
+             G(\phi) &= H(Q) - \sum_{s\in \{1,r\}} \frac{|Q_{s}(\phi)|}{|Q|}H(Q_{s}(\phi))
+            \label{eq:eq5_6}
+        \end{align}
+        Onde a entropia de Shannon\footnote{A entropia é definida como sendo uma forma de medir o grau médio de incerteza a respeito de fontes de informação, o que consequentemente permite a quantificação da informação presente que flui no sistema. Em termos simples, o conceito de entropia se associa à idéia de que, quanto mais incerto é o resultado de um experimento aleatório, maior é a informação que se obtém ao observar a sua ocorrência.} \cite{shannon2001mathematical}
+$H(Q)$ é calculada no histograma normalizado das etiquetas das partes do corpo $l_{I}(x)$ para todos $(I,x) \in Q$.
+    \item Se o maior ganho $G(\phi^{*})$ for suficiente e a profundidade na árvore estiver abaixo de um máximo, então recolete para subconjuntos esquerdo e direito $Q_{1}(\phi^{*})$ e $Q_{r}(\phi^{*})$.
+\end{enumerate}
+
+Para manter os tempos de treinamento baixos, foi empregada uma implementação distribuída. Treinar três árvores com profundidade tamanho 20 em um milhão de imagens leva cerca de um dia em um \textit{cluster} de mil núcleos.
+
+Este trabalho, utiliza uma recente abordagem sensorial: a utilização de mapas de profundidade para a detecção de presença em um ambiente interno. Tratando-se de um sistema biométrico, do tipo físico, tendo como características desse tipo de sistema: não cooperativa, sigilosa, não habituado, não auxiliado e \textit{less intrusive}. o \textit{Kinect SDK} utiliza os resultados do algoritmo de florestas de decisão aleatória para identificar \textit{joints} e partes do corpo de indivíduos em uma cena. A partir de tecnologias visuais, livre de marcador, o SDK utiliza processos de triangulação estéreo para extração do mapa de profundidade, calculando a partir desse, a posição física dos indivíduos.

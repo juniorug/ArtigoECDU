@@ -47,7 +47,7 @@ Conforme visto na figura \ref{fig:visao-geral}, o sistema possui as camadas:
 \subsubsection{Arquitetura do \textit{Kinect for Windows} SDK}\label{sec:kinectSDK}
 O SDK fornece uma biblioteca e ferramentas de software sofisticadas para ajudar os desenvolvedores a usar a forma rica de entrada natural baseada no uso do \textit{Kinect}, que detecta e reage a eventos do mundo real. O \textit{Kinect} e a biblioteca de software interagem com aplicações, como mostrado na Figura \ref{fig:sdk_interact}. Os componentes do SDK são exibidos na figura \ref{fig:sdk_architecture_color} e incluem:
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=0.5\textwidth]{images/sdk_interaction.png}
 \caption{Interação de Hardware e Software com a Aplicação}
@@ -102,24 +102,14 @@ Uma vez que o manipulador de eventos é chamado, significa que há um novo quadr
 
 Quando se trata do Kinect, há apenas uma imagem, que é capturada pelo sensor de profundidade IR. Então, como funciona a triangulação estéreo? Na verdade, existem duas imagens em vez de uma. A segunda imagem é invisível - é um padrão do emissor IR, já definido com o laser IR. O laser IR não é modulado. Tudo o que o laser faz é projetar um padrão pseudo-aleatório de especificações no ambiente Kinect. Essas duas imagens não são equivalentes, pois há alguma distância entre o emissor IR e o sensor de profundidade IR. Essas duas imagens são consideradas como correspondência para diferentes câmeras e permitem a aplicação de triangulação estéreo para calcular a profundidade como mostrado na imagem \ref{fig:trilatStereo}. Essa imagem demonstra como $x1$ e $x2$ são medidos usando a triangulação estéreo para um ponto $X$ na cena. 
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=0.4\textwidth]{images/trilateracao_estereo.png}
 \caption{Trilateração estéreo para cálculo de profundidade.}
 \label{fig:trilatStereo}
 \end{figure}
 
-Em um dado pixel $x$, a funcionalidade computa: 
-
-
-\begin{align}
-{f_{\theta}}(I, x) = d_{I}  \left(x + \frac{\boldsymbol{u}}{d_{I}(x)}\right) -  d_{I} \left(x + \frac{\boldsymbol{v}}{d_{I}(x)}\right) ,
-\label{eq:eq1}
-\end{align}
-
-Onde $d_{I}(x)$ é a profundidade do pixel $x$ na imagem $I$ e os parâmetros $\theta = (\boldsymbol{u,v})$ descreve os \textit{offsets} $\boldsymbol{u}$ e $\boldsymbol{v}$. A normalização dos \textit{offsets} por $\frac{1}{d_{I}(x)}$ garante que os recursos sejam invariantes de profundidade: em um determinado ponto do corpo, um deslocamento de espaço fixo resultará se o pixel está próximo ou longe da câmera. Os recursos são, portanto, invariantes de translação 3D (efeitos de perspectiva de módulo). Se um \textit{pixel} deslocado estiver no fundo ou fora dos limites da imagem, a sonda de profundidade $d_{I}(x')$ recebe um grande valor constante positivo.
-
-o \textit{Depth Data Stream} lê os pontos na cena, processa os dados, de acordo com a equação \ref{eq1} e envia a informação de profundidade a partir da qual eles foram refletidos, para o \textit{Recognition Stream}. Nele, é identificado o sensor \textit{Kinect} conectado e é ativado o canal do fluxo de profundidade.
+o \textit{Depth Data Stream} lê os pontos na cena, processa os dados, de acordo com a equação \ref{eq:eq1} e envia a informação de profundidade a partir da qual eles foram refletidos, para o \textit{Recognition Stream}. Nele, é identificado o sensor \textit{Kinect} conectado e é ativado o canal do fluxo de profundidade.
 
 A classe \textit{ImageStream} possui o método \textit{Enable()} sobrecarregado. Por padrão, o sensor permite o fluxo de profundidade com o formato de imagem de profundidade de resolução 640x480 \textit{pixels} e 30 frames por segundo (\textit{Resolution640x480Fps30}).
 
@@ -189,7 +179,7 @@ As posições dos \textit{joints} são medidas por três coordenadas ($X, Y$ e $
 O SDK do \textit{Kinect} fornece um conjunto de API's que facilitam a manipulação de \textit{joints}. Cada \textit{joint} é identificado pelo seu nome (cabeça, ombros, cotovelos, pulsos, braços, coluna, quadris, joelhos, tornozelos, etc.) e o estado do rastreamento, determinado por \textit{Tracked, Not Tracked,} ou \textit{Inferred}. a imagem \ref{fig:human_joints} representa o esqueleto humano completo de frente, com os 20 pontos comuns que podem ser rastreados pelo Kinect.
 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=0.4\textwidth]{images/human_joints.png}
 \caption{\textit{Joints} capturados pelo Kinect}
