@@ -30,7 +30,7 @@ A solução apresenta um estilo arquitetural híbrido, com características de t
 \item Em camadas: \textit{Virtual Machine}.
 \end{itemize}
 
-O estilo baseado em eventos (\textit{Event Based}) é um estilo arquitetônico baseado na invocação implícita que fornece uma interação indireta entre componentes acoplados de forma livre, facilitando a adaptação e melhorando a escalabilidade do sistema. Os componentes do tipo de evento (\textit{Depth}, \textit{color} e \textit{Infrared}.) comunicam-se apenas através de eventos transmitidos por um conector de evento.
+O estilo baseado em eventos (\textit{Event Based}) é um estilo arquitetônico baseado na invocação implícita que fornece uma interação indireta entre componentes acoplados de forma livre, facilitando a adaptação e melhorando a escalabilidade do sistema. Os componentes do tipo de evento (\textit{Depth}, \textit{color} e \textit{Infrared}.) comunicam-se apenas através de eventos transmitidos por um conector \textit{event}.
 Este conector então retransmite os eventos para todos os componentes do tipo \textit{Observer} mostrando interesse no evento em questão (Nesse caso, o \textit{Recognition Stream}), melhorando assim a eficiência da distribuição de eventos.
 
 \textit{Pipes} e Filtros (\textit{Pipe and Filter}) é um estilo arquitetural composto por uma cadeia de elementos de processamento, dispostos de forma tal que a saída de cada elemento é a entrada do próximo. O fluxo de dados se dá através de \textit{pipes} (canos) e os dados sofrem transformações quando processados nos filtros. Em outras palavras, os \textit{pipes} é que possibilitam o fluxo dos dados, e os filtros fazem o processamento dos mesmos, colocando-os nos \textit{pipes} antes que todos os dados de entrada sejam consumidos. Portanto, a nível de arquitetura, o processamento é mapeado em filtros e os \textit{pipes} agem como condutores de dados. O componente \textit{Recognition Stream} é composto por subcomponentes do tipo \textit{Filter} e a comunicação entre os mesmos se dá através dos conectores do tipo \textit{Pipe}. 
@@ -176,7 +176,7 @@ Para superar tais problemas e rastrear diferentes articulações independentemen
 
 As posições dos \textit{joints} são medidas por três coordenadas ($X, Y$ e $Z$), onde $X$ e $Y$ definem a posição do \textit{joint} e $Z$ representa a distância ao sensor. Para obter as coordenadas adequadas, o sensor calcula as três visualizações da mesma imagem: vista frontal, vista esquerda e vista superior, pelo qual o sensor define a proposta do corpo 3D. nesta classe, o fluxo de processamento  utiliza os dados de profundidade e combina com os dados da floresta de decisão e gera os segmentos do corpo. Uma vez que todas as partes são identificadas com base nos dados rotulados, o sensor identifica as articulações do corpo. O sensor calcula a vista 3D a partir da parte superior, frente e esquerda das juntas propostas. Então, o sensor começa a rastrear o esqueleto humano e o movimento do corpo com base nos pontos comuns propostos e na visão 3D.
 
-O SDK do \textit{Kinect} fornece um conjunto de API's que facilitam a manipulação de \textit{joints}. Cada \textit{joint} é identificado pelo seu nome (cabeça, ombros, cotovelos, pulsos, braços, coluna, quadris, joelhos, tornozelos, etc.) e o estado do rastreamento, determinado por \textit{Tracked, Not Tracked,} ou \textit{Inferred}. a imagem \ref{fig:human_joints} representa o esqueleto humano completo de frente, com os 20 pontos comuns que podem ser rastreados pelo Kinect.
+O SDK do \textit{Kinect} fornece um conjunto de API's que facilitam a manipulação de \textit{joints}. Cada \textit{joint} é identificado pelo seu nome (cabeça, ombros, cotovelos, pulsos, braços, coluna, quadris, joelhos, tornozelos, etc.) e o estado do rastreamento, determinado por \textit{Tracked, Not Tracked,} ou \textit{Inferred}. a Figura \ref{fig:human_joints} representa o esqueleto humano completo de frente, com os 20 pontos comuns que podem ser rastreados pelo Kinect. Visando uma economia de recurso computacional, foram utilizados apenas dez desses joints, representados na Figura  \ref{fig:human_joints2} .
 
 
 \begin{figure}[ht]
@@ -186,15 +186,54 @@ O SDK do \textit{Kinect} fornece um conjunto de API's que facilitam a manipulaç
 \label{fig:human_joints}
 \end{figure}
 
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.4\textwidth]{images/human_joints_2.png}
+\caption{\textit{Joints} superiores utilizados.}
+\label{fig:human_joints2}
+\end{figure}
 
-\textcolor{red}{parei em Skeleton tracking with the Kinect SDK. %vamos adicionar os joints que sao utilizados (seated mode); "Start tracking skeleton joints", "Get Kinect running and instantiate skeleton
-%tracking", "Enabling and disabling the skeleton stream", "Processing the skeleton frames"
+O fluxo de processo para capturar dados de esqueleto é o mesmo que o usado para os fluxos de dados de cor e profundidade. os dados podem ser capturados usando o modelo de evento ou o modelo de \textit{polling}. O modelo utilizado na solução é o modelo de evento.  O objeto \textit{KinectSensor} tem um evento chamado \textit{SkeletonFrameReady}, que dispara cada vez que novos dados de esqueleto se tornam disponíveis no sensor. Cada quadro de \textit{SkeletonStream} produz uma coleção de objetos de esqueleto. Cada objeto de esqueleto contém os dados para seus pontos de junção, que estão envolvidos dentro do objeto \textit{JointCollection}. Cada articulação possui seu próprio tipo de modo de rastreamento e informações adicionais para representar as posições.
+
+Sempre que uma nova estrutura de esqueleto é enviada pelos sensores, o método \textit{sensor\_SkeletonFrameReady()} é invocado já que está registrado no evento \textit{SkeletonFrameReady}. O método é invocado passando um argumento do tipo \textit{SkeletonFrameReadyEventArgs}. O argumento de evento tem um método chamado \textit{OpenSkeletonFrame()} que lê o objeto \textit{SkeletonFrame} atual do sensor. O objeto \textit{SkeletonFrame} é enviado então para o método \textit{PrintTrackedCoordinates}, responsável por calcular a distância entre o sujeito e o \textit{Kinect}. O método \textit{PrintTrackedCoordinates} obtém as coordenadas $X$, $Y$, e $Z$ dos dez \textit{joints} observáveis, calcula a distância, para cada um deles, e finalmente, calcula a média entre essas distâncias. O cálculo da distância leva em conta a distancia entre dois pontos no mapa: A (câmera do \textit{kinect}) e B (Pessoa) é obtida através da Fórmula \ref{eq:distancia1}:
+
+\begin{align}
+    d_{AB} &= \sqrt[]{{(X_{B} - X_{A})}^2 + {(Y_{B} - Y_{A})}^2 + {(Z_{B} - Z_{A})}^2}
+    \label{eq:distancia1}
+\end{align}
+
+Que é derivada do teorema de Pitágoras e pode ser aplicado pra $n$ planos:
+
+\begin{align}
+    \sqrt[]{\sum_{i=1}^{n}{(i_{B} - i_{A})}^2}
+    \label{eq:pitagoras}
+\end{align}
+
+
+Considerando o ponto inicial A (\textit{Kinect}) como coordenadas $(0,0,0)$, e aplicando esses valores sobre a Fórmula   \ref{eq:distancia1} temos então:
+\begin{align}
+    d_{AB} &= \sqrt[]{{X_{B}}^2 + {Y_{B}}^2 + {Z_{B}}^2} 
+    \label{eq:distanciaFinal}
+\end{align}
+
+Finalizado o processo, o \textit{PrintTrackedCoordinates} imprime no console as informações de distância, coordenadas e índice identificador de cada sujeito detectado na cena.
+
+\textcolor{red}{VER SE VAMOS ADICIONAR "Looking inside skeleton stream helpers". 
 }
 
 
 \subsubsection{Face Recognition (Recognition Stream )}\label{sec:depthDataRecognition}
 processing data stream
-
+\textcolor{red}{ver "Working with face tracking" }
 
 \subsubsection{Main Window (GUI)}\label{sec:mainWindow}
 presentating depth map
+
+
+A classe \textit{MainWindow} contém a funcionalidade genérica do software. Ela contém um conjunto de variáveis globais para a funcionalidade adequada do código e métodos para as funções primárias do sistema. Quando o software é iniciado, ele executa o método \textit{MainWindow()} que inicializa os componentes da GUI. Quando o método \textit{MainWindow()} é concluído, o \textit{MainWindowLoaded()} é executado, localizando o sensor \textit{Kinect} e instancia-o como um objeto, alocando as imagens de profundidade e a grade de reconhecimento facial na GUI.
+
+O método \textit{FacialRecognition()} é um manipulador de eventos que é acionado sempre que há uma nova imagem captada pelo \textit{Stream} do \textit{Kinect}. A imagem capturada pelo \textit{Kinect} é originalmente armazenada como uma imagem de \textit{bitmap}. Uma vez que isso ocorre, o método envia a imagem ao \textit{RecognitionStream} para executar os algoritmos de detecção, que em caso positivo, retorna os dados para serem exibidos em tela.
+
+O método \textit{SkeletonTracking()} é outro manipulador de eventos que é executado sempre que o \textit{SkeletonStream} gera um novo \textit{SkeletonFrame}. O \textit{SkeletonStream} é uma abstração que determina onde cada pessoa está localizada no alcance do \textit{Kinect}. Cada \textit{SkeletonFrame} gerado pelo \textit{SkeletonStream} consiste em uma matriz de objetos de esqueleto, que por sua vez contém coordenadas tridimensionais para cada conjunto reconhecido pelo \textit{Kinect}, além da distância em relação ao kinect. A matriz \textit{SkeletonFrame} não garante que o primeiro Esqueleto esteja localizado no índice zero da matriz, o segundo no índice um da matriz e assim por diante. Então um método percorre a matriz e determina quais esqueletos são realmente válidos antes de usá-los.
+
+O método \textit{KinectSensorOnAllFramesReady()} é um manipulador de eventos que é acionado sempre que houver uma nova estrutura de dados da detecção de esqueleto ou de imagem de profundidade capturada pelo bloco de \textit{Stream}. Este evento é uma versão combinadas dos métodos \textit{FacialRecognition()} e \textit{SkeletonTracking()}.
