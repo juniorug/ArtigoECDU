@@ -94,13 +94,10 @@ this.sensor.ColorFrameReady +=
 
 Uma vez que o manipulador de eventos é chamado, significa que há um novo quadro que foi enviado pelo sensor e é hora de processá-lo. Os argumentos do evento para este manipulador de eventos expõem um método \textit{OpenColorImageFrame()} que retorna um \textit{frame} de imagem do tipo \textit{ColorImageFrame}. Com isso, o controle da aplicação se move para o Manipulador de eventos \textit{sensor\_ColorFrameReady}, responsável por designar os dados da camera RGB para o devido  processamento do quadro de imagem no \textit{Skeleton Recognizer}. 
 
-
-
-
 \subsubsection{Depth Data Stream}\label{sec:depthDataStream}
 \textcolor{red}{capturing data stream}
 
-Quando se trata do Kinect, há apenas uma imagem, que é capturada pelo sensor de profundidade IR. Então, como funciona a triangulação estéreo? Na verdade, existem duas imagens em vez de uma. A segunda imagem é invisível - é um padrão do emissor IR, já definido com o laser IR. O laser IR não é modulado. Tudo o que o laser faz é projetar um padrão pseudo-aleatório de especificações no ambiente Kinect. Essas duas imagens não são equivalentes, pois há alguma distância entre o emissor IR e o sensor de profundidade IR. Essas duas imagens são consideradas como correspondência para diferentes câmeras e permitem a aplicação de triangulação estéreo para calcular a profundidade como mostrado na imagem \ref{fig:trilatStereo}. Essa imagem demonstra como $x1$ e $x2$ são medidos usando a triangulação estéreo para um ponto $X$ na cena. 
+Quando se trata do Kinect, há apenas uma imagem, que é capturada pelo sensor de profundidade IR. Então, como funciona a triangulação estéreo? Na verdade, existem duas imagens em vez de uma. A segunda imagem é invisível - é um padrão do emissor IR, já definido com o laser IR. O laser IR não é modulado. Tudo o que o laser faz é projetar um padrão pseudo-aleatório de especificações no ambiente Kinect. Essas duas imagens não são equivalentes, pois há alguma distância entre o emissor IR e o sensor de profundidade IR. Essas duas imagens são consideradas como correspondência para diferentes câmeras e permitem a aplicação de triangulação estéreo para calcular a profundidade como mostrado na imagem \ref{fig:trilatStereo}. Essa imagem demonstra como $x1$ e $x2$ são medidos usando a triangulação estéreo para um ponto $X$ na cena. O sensor \textit{Kinect} retorna dados brutos do \textit{frame} de profundidade em 13 bits. Esses bits fornecem a distância medida em milímetros.
 
 \begin{figure}[!ht]
 \centering
@@ -133,18 +130,30 @@ sensor.DepthFrameReady +=
 \label{fig:sdk_architecture_color}
 \end{figure*}
 
+\subsubsection{Skeleton Data Stream}\label{sec:skeletonStream}
+O sensor Kinect retorna os dados brutos de profundidade, onde cada pixel contém um valor que representa a distância entre o sensor e o objeto. Os dados de profundidade fornecem possibilidades ilimitadas. Para essa solução, foi necessário obter controle usando o movimento do corpo. Primeiramente é necessário capturar a informação sobre os usuários que estão na frente do Kinect e, a partir desse momento, identificar o mapeamento do esqueleto na imagem.
 
-\subsubsection{Depth Data Processing (Recognition Stream - Filter)}\label{sec:depthDataProcessing}
+A informação dos frames de esqueleto é representada por \textit{SkeletonStream}. A classe \textit{SkeletonStream} define as propriedades e métodos para trabalhar com dados de esqueleto e permite assumir o controle sobre todos os dados do esqueleto. Essa classe define também as propriedades para configurar o modo de rastreio para os \textit{Skeletons} e permite escolher o esqueleto certo para a aplicação usando o método \textit{AppChooseSkeletons()}. 
+
+O recurso completo de rastreamento do esqueleto é construído com base em algoritmos de processamento de dados em profundidade, aprendizado de máquina interna e algoritmos de visão colorida (RGB). Usando o rastreamento do esqueleto, o sensor \textit{Kinect} pode rastrear o corpo humano com vários pontos de junção (\textit{joint points}). Usando o \textit{Kinect} é possível detectar até seis indivíduos e até 20 \textit{joints} para cada um deles. A Figura \ref{fig:human_joints} representa o esqueleto humano completo de frente, com os 20 pontos comuns que podem ser rastreados pelo Kinect.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.4\textwidth]{images/human_joints.png}
+\caption{\textit{Joints} capturados pelo Kinect}
+\label{fig:human_joints}
+\end{figure}
+
+\subsubsection{\textit{Depth Data Processing}: Filtros}\label{sec:depthDataProcessing}
 \textcolor{red}{processing data stream}
 O manipulador de eventos \textit{DepthFrameReady} é invocado com o argumento \textit{DepthImageFrameReadyEventArgs}, que possui o método \textit{OpenDepthImageFrame()} para retornar o quadro de imagem de profundidade atual enviado pelo sensor. O  método padrão para \textit{DepthFrameReady} é o \textit{SensorDepthFrameReady}. Nesse método, é recuperado o quadro de imagem em profundidade, usando o método \textit{OpenDepthImageFrame()}, o qual retorna os dados de profundidade brutos do sensor. \textit{PixelData} cria o tamanho do \textit{buffer} para o quadro de imagem de profundidade de entrada.
 
 O \textit{frame} de profundidade possui propriedades semelhantes que copiam os dados de \textit{pixels} para o \textit{buffer} recém-criado. \textit{CopyPixelDataTo()} é usado para copiar o \textit{array} de bytes de dados de \textit{pixels} do quadro de imagem atualmente recebido para o \textit{buffer}. Antes de copiar os dados de \textit{pixels}, primeiro é calculado o tamanho do \textit{buffer} usando a propriedade \textit{PixelDataLength} e, em seguida, é copiada a mesma imagem do \textit{array} de bytes como \textit{DepthImageFrame}. Como o quadro bruto de imagem de profundidade é uma imagem em escala de cinza de 16 \textit{bits}, \textit{PixelFormats} é especificado  como \textit{Gray16} ao criar a fonte de \textit{bitmap} para o controle de imagem em profundidade.
 
-\textcolor{red}{adicionar aqui os metodos de filtro e segmentação...}
-
-\paragraph{\textit{Filters}}\label{sec:filters}
+\paragraph{\textit{DownSampleFilter}}\label{sec:DSfilter}
  Na imagem de profundidade gerada pelo \textit{Kinect}, todos os pontos que o sensor não consegue medir a profundidade são deslocados para 0 no \textit{array} de saída. Considerando  como um tipo de ruído, Para evitar sua interferência, é necessário recuperar seu verdadeiro valor de profundidade. Supondo que o espaço seja contínuo, o mais provável é que o ponto faltante tenha um valor de profundidade semelhante aos seus vizinhos. Com esta suposição, todos os 0 \textit{pixels} são considerados como vagos e precisam ser preenchidos. É utilizado então o algoritmo de interpolação vizinho mais próximo para preencher esses \textit{pixels} e obter uma matriz de profundidade que tenha valores significativos em todos os \textit{pixels}. Em seguida, é utilizado o filtro mediano com uma janela 4 x 4 na matriz de profundidade para tornar os dados suaves.
 
+\paragraph{\textit{Median Filter}}\label{sec:Mfilter}
 O filtro mediano é uma técnica de filtragem digital não-linear, usada frequentemente para remover o ruído de uma imagem ou sinal. Essa redução de ruído é um passo de pré-processamento típico para melhorar os resultados do processamento posterior (segmentação da uma imagem). A filtragem média é amplamente utilizada no processamento de imagens digitais porque, sob certas condições, preserva bordas ao mesmo tempo que remove o ruído. A idéia principal do filtro mediano é percorrer a entrada do sinal por entrada, substituindo cada entrada pela mediana das entradas vizinhas. O padrão de vizinhos é chamado de "janela", que desliza, entrada por entrada, em todo o sinal. usando um tamanho de janela de três com uma entrada imediatamente anterior e seguindo cada entrada, um filtro mediano é aplicado ao  sinal, como exemplificado, para um conjunto de \textit{pixesls} $x = [2\,80\, 6 \,3]$:
 
 \begin{align*}
@@ -158,16 +167,10 @@ y = [2\,\, 6\,\, 6\,\, 3]\MoveEqLeft[23].
 
 Finalmente, é criado o objeto \textit{BitmapSource} e atribuído ao controle de imagem \textit{depthImageControl}, que está definido no arquivo XAML para exibir os dados do fluxo.
 
+\subsubsection{\textit{SkeletonRecognizer}: Segmentação}\label{sec:skeleton}
+\textcolor{red}{processing joints}
 
-\subsubsection{Skeleton recognizer }\label{sec:skeleton}
-processing joints
-
-O sensor Kinect retorna os dados brutos de profundidade, onde cada pixel contém um valor que representa a distância entre o sensor e o objeto. Os dados de profundidade fornecem possibilidades ilimitadas. Para essa solução, foi necessário obter controle usando o movimento do corpo. Primeiramente é necessário capturar a informação sobre os usuários que estão na frente do Kinect e, a partir desse momento, identificar o mapeamento do esqueleto na imagem.
-
-O recurso completo de rastreamento do esqueleto é construído com base em algoritmos de processamento de dados em profundidade, aprendizado de máquina interna e algoritmos de visão colorida (RGB). Usando o rastreamento do esqueleto, o sensor \textit{Kinect} pode rastrear o corpo humano com vários pontos de junção (\textit{joint points}). Usando o \textit{Kinect} é possível detectar até seis indivíduos e até 20 \textit{joints} para cada um deles. Para esta solução, são utilizados apenas os \textit{joints} da região superior do corpo humano, evitando assim um processamento exaustivo com \textit{joints} desnecessários.
-
-Neste componente, o fluxo de processamento obtem imagem segmentada em profundidade, usando o mapa de profundidade, já processado pelos filtros. Remove pequenas \textit{blobs}. Obtem posições candidatas para a cabeça e a parte superior do corpo utilizando o detector da parte superior do corpo. Corrige os pontos de cabeça, pescoço e ombro usando os retângulos delimitadores obtidos no passo anterior. Calcula a Transformação de Distância Estendida para a imagem de profundidade segmentada. Inicia uma busca angular para os melhores valores em torno das articulações do ombro. Retorna um \textit{array} com as posições dos \textit{joints} superiores. \textcolor{red}{ver referencia, esta comentada aqui... %(https://people.eecs.berkeley.edu/~akar/IITK_website/cs397/Kinect%20Talk.pdf)
-}
+Neste componente, o fluxo de processamento obtem imagem segmentada em profundidade, usando o mapa de profundidade, já processado pelos filtros. Remove pequenas \textit{blobs}. Obtem posições candidatas para a cabeça e a parte superior do corpo utilizando o detector da parte superior do corpo. Corrige os pontos de cabeça, pescoço e ombro usando os retângulos delimitadores obtidos no passo anterior. Calcula a Transformação de Distância Estendida para a imagem de profundidade segmentada. Inicia uma busca angular para os melhores valores em torno das articulações do ombro. Retorna um \textit{array} com as posições dos \textit{joints}. Para esta solução, são utilizados apenas os \textit{joints} da região superior do corpo humano, evitando assim um processamento exaustivo com \textit{joints} desnecessários.
 
 \paragraph{\textit{Skeleton tracker}}\label{sec:SkeletonTracker}
 A classe SkeletonTracker não é responsável apenas pelo rastreamento das articulações, lendo as informações de uma pessoa. Além disso, ele rastreia o movimento completo do corpo. O reconhecimento de pose humano em tempo real é difícil e desafiador devido às diferentes poses do corpo (uma única parte do corpo pode se mover em diferentes direções e maneiras), tamanhos (tamanhos de humanos variam), roupas do usuário, alturas (humano pode ser alto, baixo, médio), e assim por diante.
@@ -176,15 +179,7 @@ Para superar tais problemas e rastrear diferentes articulações independentemen
 
 As posições dos \textit{joints} são medidas por três coordenadas ($X, Y$ e $Z$), onde $X$ e $Y$ definem a posição do \textit{joint} e $Z$ representa a distância ao sensor. Para obter as coordenadas adequadas, o sensor calcula as três visualizações da mesma imagem: vista frontal, vista esquerda e vista superior, pelo qual o sensor define a proposta do corpo 3D. nesta classe, o fluxo de processamento  utiliza os dados de profundidade e combina com os dados da floresta de decisão e gera os segmentos do corpo. Uma vez que todas as partes são identificadas com base nos dados rotulados, o sensor identifica as articulações do corpo. O sensor calcula a vista 3D a partir da parte superior, frente e esquerda das juntas propostas. Então, o sensor começa a rastrear o esqueleto humano e o movimento do corpo com base nos pontos comuns propostos e na visão 3D.
 
-O SDK do \textit{Kinect} fornece um conjunto de API's que facilitam a manipulação de \textit{joints}. Cada \textit{joint} é identificado pelo seu nome (cabeça, ombros, cotovelos, pulsos, braços, coluna, quadris, joelhos, tornozelos, etc.) e o estado do rastreamento, determinado por \textit{Tracked, Not Tracked,} ou \textit{Inferred}. a Figura \ref{fig:human_joints} representa o esqueleto humano completo de frente, com os 20 pontos comuns que podem ser rastreados pelo Kinect. Visando uma economia de recurso computacional, foram utilizados apenas dez desses joints, representados na Figura  \ref{fig:human_joints2} .
-
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.4\textwidth]{images/human_joints.png}
-\caption{\textit{Joints} capturados pelo Kinect}
-\label{fig:human_joints}
-\end{figure}
+O SDK do \textit{Kinect} fornece um conjunto de API's que facilitam a manipulação de \textit{joints}. Cada \textit{joint} é identificado pelo seu nome (cabeça, ombros, cotovelos, pulsos, braços, coluna, quadris, joelhos, tornozelos, etc.) e o estado do rastreamento, determinado por \textit{Tracked, Not Tracked,} ou \textit{Inferred}. Visando uma economia de recurso computacional, foram utilizados apenas dez desses joints, representados na Figura  \ref{fig:human_joints2} .
 
 \begin{figure}[ht]
 \centering
@@ -216,15 +211,37 @@ Considerando o ponto inicial A (\textit{Kinect}) como coordenadas $(0,0,0)$, e a
     \label{eq:distanciaFinal}
 \end{align}
 
+
+Aplicando a Fórmula sa solução, temos:
+\begin{minted}{csharp}
+public double GetDistance(CameraSpacePoint
+point) {
+  return Math.Sqrt(
+	Math.Pow(point.X, 2) +
+	Math.Pow(point.Y, 2) +
+	Math.Pow(point.Z, 2));
+}
+\end{minted}
+
 Finalizado o processo, o \textit{PrintTrackedCoordinates} imprime no console as informações de distância, coordenadas e índice identificador de cada sujeito detectado na cena.
 
-\textcolor{red}{VER SE VAMOS ADICIONAR "Looking inside skeleton stream helpers". 
-}
-
-
-\subsubsection{Face Recognition (Recognition Stream )}\label{sec:depthDataRecognition}
+\subsubsection{Face Recognition}\label{sec:depthDataRecognition}
 processing data stream
-\textcolor{red}{ver "Working with face tracking" }
+
+
+A classe de rastreamento de rostos \textit{FaceRecognizer} detecta e rastreia as posições e orientações dos rostos e também pode animar em tempo real as posições das sobrancelhas e a forma da boca. O rastreamento facial pode ser usado em vários locais, como o reconhecimento de expressões faciais, a interação Interface de usuário natural (Natural user interface - NUI) com o rosto, e tarefas relacionadas ao rosto. Na aplicação desenvolvida, o rastreamento de rostos é utilizado apenas para visualização na interface gráfica, uma vez que as informações de interesse (distância e coordenadas) dos sujeitos na cena já foram obtidos após os processos de filtro e segmentação. A classe \textit{FaceTrackFrame} é o núcleo do sistema de detecção de faces, que representa o rosto para cada \textit{frame}. Através dela, é possível obter informações do posicionamento e do formato do rosto. O mecanismo analisa os dados de entrada, deduz a pose da cabeça e as expressões faciais e disponibiliza essa informação em tempo real, para a interface gráfica da aplicação.
+
+O \textit{FaceTracking} usa o sistema de coordenadas para produzir seus resultados de rastreamento 3D. A origem está localizada no centro óptico da câmera (sensor), o eixo Z está apontando para o usuário, e o eixo Y está apontando para cima. As unidades de medida são metros, para translação e graus para ângulos de rotação.
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.4\textwidth]{images/3dface.png}
+\caption{A máscara 3D calculada sobre o rosto do usuário (no quadro de coordenadas da câmera).}
+\label{fig:3dfaces}
+\end{figure}
+
+
 
 \subsubsection{Main Window (GUI)}\label{sec:mainWindow}
 presentating depth map
