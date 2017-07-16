@@ -1,9 +1,9 @@
 \section{Referencial Teórico}\label{sec:referencial-teorico}
 
-Nesta Seção, os principais conceitos relacionados a este trabalho são apresentados, fornecendo subsídios para o desenvolvimento do projeto de detecção de pessoas em ambiente fechado, usando mapas de profundidade. A subseção \ref{sec:biometria} expõe informações referentes à biometria e sistemas biométricos. A subseção \ref{sec:deteccao-rastreamento} apresenta conceitos relacionados à detecção e rastreamento de pessoas. A subseção \ref{sec:tec-rastreamento} discute o tópico tecnologias de rastreamento. Na subseção \ref{sec:determ-posic} são abordadas as técnicas de determinação de posição comumente utilizadas. A subseção \ref{sec:recFacial} explicita a definição de reconhecimento facial. Por fim, na subseção \ref{sec:kinect} são apresentadas informaçoes e conceitos referentes ao \textit{Microsoft Kinect}.
+Nesta Seção, os principais conceitos relacionados a este trabalho são apresentados, fornecendo subsídios para o desenvolvimento do projeto de detecção de pessoas em ambiente fechado, usando mapas de profundidade. A subseção \ref{sec:biometria} expõe informações referentes à biometria e sistemas biométricos. A subseção \ref{sec:deteccao-rastreamento} apresenta conceitos relacionados à detecção e rastreamento de pessoas. A subseção \ref{sec:tec-rastreamento} discute o tópico tecnologias de rastreamento. Na subseção \ref{sec:determ-posic} são abordadas as técnicas de determinação de posição comumente utilizadas. A subseção \ref{sec:recFacial} explicita a definição de reconhecimento facial. Por fim, na subseção \ref{sec:kinect} são apresentadas informações e conceitos referentes ao \textit{Microsoft Kinect}.
 
 \subsection{Biometria e Sistemas Biométricos}\label{sec:biometria}
-O termo biometria deriva do grego bios (vida) + metron (medida) e, na autenticação, refere-se à utilização de características próprias de um indivíduo para proceder à sua autenticação e/ou identificação \cite{magalhaes2003biometria}. Na biometria utiliza-se caracteristicas fisicas/fisiológicas ou comportamentais para a identificação de pessoas, sendo baseada em algo que a pessoa e e não em algo que ela possui ou sabe. A Figura~\ref{fig:biometria} ilustra exemplos de características biométricas \cite{cardia2015avaliaccao}.
+O termo biometria deriva do grego bios (vida) + metron (medida) e, na autenticação, refere-se à utilização de características próprias de um indivíduo para proceder à sua autenticação e/ou identificação \cite{magalhaes2003biometria}. Na biometria utiliza-se características físicas/fisiológicas ou comportamentais para a identificação de pessoas, sendo baseada em algo que a pessoa e e não em algo que ela possui ou sabe. A Figura~\ref{fig:biometria} ilustra exemplos de características biométricas \cite{cardia2015avaliaccao}.
 
 \begin{figure*}[ht]
 \centering
@@ -12,7 +12,7 @@ O termo biometria deriva do grego bios (vida) + metron (medida) e, na autentica�
     \label{fig:biometria}
 \end{figure*}
 
-Características fisicas/fisiológicas são baseadas na anatomia ou no funcionamento do organismo de uma pessoa viva, como impressão digitalou termograma facial. Já as comportamentais são baseadas na forma particular que um sujeito executa uma ação, como o a dinâmica de digitação ou a assinatura captada de modo digital. Qualquer característica pode ser utilizada desde que atenda algumas restrições, tais como \cite{maltoni2009handbook}:
+Características físicas/fisiológicas são baseadas na anatomia ou no funcionamento do organismo de uma pessoa viva, como impressão digital ou termograma facial. Já as comportamentais são baseadas na forma particular que um sujeito executa uma ação, como o a dinâmica de digitação ou a assinatura captada de modo digital. Qualquer característica pode ser utilizada desde que atenda algumas restrições, tais como \cite{maltoni2009handbook}:
 
 \begin{itemize}
 \item Universalidade: A característica deve estar presente na maior quantidade possível de pessoas;
@@ -24,7 +24,7 @@ Características fisicas/fisiológicas são baseadas na anatomia ou no funcionam
 \item Grau de impostura: A característica deve ser resistente a fraude.
 \end{itemize}
 
-Um sistema de reconhecimento de padrões que utiliza um vetor de característica baseado em qualquer traço biométrico para garantir a identidade de uma pessoa é um sistema biométrico. Esses sistemas recebem a característica da pessoa, e processa em uma forma reduzida chamada de \textit{template}. Esse \textit{template} pode ser armazenado em um banco de dados central ou em um dispositivo de mídia removível.Segundo Wayman \cite{wayman2002}, um sistema biométrico pode ser classificado em uma das setes categorias: 
+Um sistema de reconhecimento de padrões que utiliza um vetor de característica baseado em qualquer traço biométrico para garantir a identidade de uma pessoa é um sistema biométrico. Esses sistemas recebem a característica da pessoa, e processa em uma forma reduzida chamada de \textit{template}. Esse \textit{template} pode ser armazenado em um banco de dados central ou em um dispositivo de mídia removível. Segundo Wayman \cite{wayman2002}, um sistema biométrico pode ser classificado em uma das setes categorias: 
 
 \begin{itemize}
 \item Cooperativo ou não cooperativo: O sujeito deseja ser identificado?
@@ -55,7 +55,7 @@ Uma das questões-chave da emergente computação móvel e robótica é a obten�
 
 
 \subsubsection{Detecção de pessoas}\label{sec:deteccao-movimento}
-Detectar seres humanos em imagens é uma tarefa desafiadora devido à sua aparência variável e à ampla gama de poses que eles podem adotar. A primeira necessidade é um conjunto de características robustas que permite que a forma humana seja discriminada de forma limpa, mesmo em ambientes despropositados sob iluminação difícil. Estudada a questão dos conjuntos de recursos para a detecção humana, dentre os principais métodos está  os descritores de histograma de desdobramento orientado (HOG) \cite{dalal2005histograms}. Os recursos baseados em gradientes, como HOG e EOH, envolvem a extração de pontos de interesse na imagem, como transformação de característica invariante em escala (EIPD), etc. Embora muitos relatórios mostrem que esses métodos Pode fornecer resultados de detecção de humanos altamente precisos, os métodos baseados em imagem RGB encontram dificuldades em perceber as formas dos seres humanos com poses articuladas ou quando o fundo é confuso. Isso resultará na diminuição da precisão ou no aumento do custo computacional\cite{dalal2005histograms}.
+Detectar seres humanos em imagens é uma tarefa desafiadora devido à sua aparência variável e à ampla gama de poses que eles podem adotar. A primeira necessidade é um conjunto de características robustas que permite que a forma humana seja discriminada de forma limpa, mesmo em ambientes despropositados sob iluminação difícil. Estudada a questão dos conjuntos de recursos para a detecção humana, dentre os principais métodos está  os descritores de histograma de desdobramento orientado (HOG) \cite{dalal2005histograms}. Os recursos baseados em gradientes, como HOG e EOH, envolvem a extração de pontos de interesse na imagem, como transformação de característica invariante em escala (EIPD), etc. Embora muitos relatórios mostrem que esses métodos possam fornecer resultados de detecção de humanos altamente precisos, os métodos baseados em imagem RGB encontram dificuldades em perceber as formas dos seres humanos com poses articuladas ou quando o fundo é confuso. Isso resulta na diminuição da precisão ou no aumento do custo computacional\cite{dalal2005histograms}.
 
 \subsubsection{Identificação de indivíduos}\label{sec:identificacao-pessoas}
 
@@ -90,21 +90,8 @@ Entretanto, essas tecnologias possuem limitações as quais podem apresentar fal
 
 Sistemas visuais de rastreamento livres de marcador (\textit{Marker-free visual based tracking systems}) somente exploram sensores óticos para medir o movimentos do corpo humano. Esta aplicação é motivada pelas falhas do uso de sistemas baseados em marcador visual, anteriormente apresentadas. Como uma técnica de captura de movimento menos restritiva, os sistemas sem marcador são capazes de superar o problema de oclusão mútua, por exemplo, uma vez que se preocupam principalmente com os limites ou características dos corpos humanos\cite{zhou2008human}.
 
-Câmeras mais avançadas podem fornecer uma resolução de um milhão de pixels, indicando uma alta precisão na detecção de movimentos de objetos. Além disso, as câmeras hoje em dia podem ser facilmente obtidas com um baixo custo, e os parâmetros podem ser configurados de forma flexível pelo usuário. Esses méritos incentivam as filmadoras a serem usadas popularmente em aplicações de vigilância. O \textit{trade-off} se dá pelo fato de que esta técnica requer uma computação intensiva para realizar a localização 3D e a redução de erros, além da minimização da latência dos dados \cite{bryson1993}. Além disso, são necessárias câmeras de alta velocidade, já que as câmeras convencionais (com uma taxa de amostragem inferior a sessenta quadros por segundo) fornecem uma largura de banda insuficiente para uma representação de dados precisa \cite{bhatnagar1993position}.
+Câmeras mais avançadas podem fornecer uma resolução de um milhão de \textit{pixels}, indicando uma alta precisão na detecção de movimentos de objetos. Além disso, as câmeras hoje em dia podem ser facilmente obtidas com um baixo custo, e os parâmetros podem ser configurados de forma flexível pelo usuário. Esses méritos incentivam as filmadoras a serem usadas popularmente em aplicações de vigilância. O \textit{trade-off} se dá pelo fato de que esta técnica requer uma computação intensiva para realizar a localização 3D e a redução de erros, além da minimização da latência dos dados \cite{bryson1993}. Além disso, são necessárias câmeras de alta velocidade, já que as câmeras convencionais (com uma taxa de amostragem inferior a sessenta quadros por segundo) fornecem uma largura de banda insuficiente para uma representação de dados precisa \cite{bhatnagar1993position}.
 
-
-\subsubsection{Tecnologias não visuais}\label{sec:tec-vis}
-Sensores utilizados nestes sistemas interagem direta ou indiretamente com o corpo humano a fim de recolher informações relativas ao movimento. Estes sensores são comumente classificados como mecânicos, inerciais, envoltório acústico, rádio ou micro-ondas e com base magnética \cite{zhou2008human}. De um modo geral, cada tipo de sensor tem as suas próprias vantagens e limitações. Limitações de modalidade específica, medição específica, e circunstâncias específicas afetam, consequentemente, o uso de tipos particulares de sensores, em ambientes diferentes \cite{Welch:2002}.
-
-Mesmo que cada sensor tenha suas próprias desvantagens, outros sensores disponíveis podem ser usados como complemento. Por exemplo, para melhorar a precisão da computação de localização, as pessoas exploraram odômetros, em vez de acelerômetros, no projeto de robôs móveis \cite{zhou2008human}.
-
-\subsubsection{Tecnologias combinadas de rastreamento}\label{sec:rastre-robo}
-Estes sistemas tiram proveito das vantagens das tecnologias visuais e não visuais. Essa estratégia de combinação ajuda a reduzir erros decorrentes da utilização de plataformas individuais. Por exemplo, os limites ou silhuetas de partes do corpo humano podem ser capturados em uma trajetória de movimento, se marcadores montados sobre essas partes não estão no "campo de visão" das câmeras \cite{zhou2008human}.
-
-Alguns dos componentes mais importantes desses sistemas são: a aquisição, processamento e interpretação da informação sensorial disponível. No nível mais baixo, a informação de detecção é utilizada para derivar sinais de controle, e a uma informação de nível mais elevado, são utilizados para criar modelos do sistema e do ambiente. A informação sensorial pode ser obtida através de uma variedade de sensores tais como: posição, velocidade, força, tátil, e a visão para citar alguns. Combinando elementos visuais e controladores pode resultar em um melhor algoritmo de rastreamento, mais eficazes e mais precisos, entretanto, essa estratégia exige alto poder de calibração e computação extremamente intensiva \cite{papanikolopoulos1993visual}.
-
-\subsection{Técnicas de determinação de posição}\label{sec:determ-posic}
-Por natureza, o posicionamento é um problema interdisciplinar que traz consigo inúmeras questões em vários campos de pesquisa, como engenharia, ciência da computação e estatística. Como consequência, a concepção e implementação de um sistema de localização é uma tarefa bastante complexa que implica um entendimento nesses domínios. No entanto, a metodologia de estimativa de localização é, em princípio, a mesma que utilizada nos tempos antigos, onde as pessoas usavam a constelação de estrelas para deduzir a localização. Hoje são utilizados dispositivos de referência fixos em locais conhecidos do nosso entorno. Então, o alvo móvel cuja posição deve ser determinada mede ângulos ou distâncias em direção a esses pontos de referência. \cite{linde2006aspects}. Algumas aplicações de localização interna encontram-se resumidas na tabela \ref{table:aplicacoes}.
 
 \begin{table*}[ht]
 \centering
@@ -123,6 +110,20 @@ $\Box$      & $\Box$      & $\Box$      & $\Box$      & $\Box$      & $\Box$    
 \hline         
 \end{tabular}
 \end{table*}
+
+\subsubsection{Tecnologias não visuais}\label{sec:tec-vis}
+Sensores utilizados nestes sistemas interagem direta ou indiretamente com o corpo humano a fim de recolher informações relativas ao movimento. Estes sensores são comumente classificados como mecânicos, inerciais, envoltório acústico, rádio ou micro-ondas e com base magnética \cite{zhou2008human}. De um modo geral, cada tipo de sensor tem as suas próprias vantagens e limitações. Limitações de modalidade específica, medição específica, e circunstâncias específicas afetam, consequentemente, o uso de tipos particulares de sensores, em ambientes diferentes \cite{Welch:2002}.
+
+Mesmo que cada sensor tenha suas próprias desvantagens, outros sensores disponíveis podem ser usados como complemento. Por exemplo, para melhorar a precisão da computação de localização, as pessoas exploraram odômetros, em vez de acelerômetros, no projeto de robôs móveis \cite{zhou2008human}.
+
+\subsubsection{Tecnologias combinadas de rastreamento}\label{sec:rastre-robo}
+Estes sistemas tiram proveito das vantagens das tecnologias visuais e não visuais. Essa estratégia de combinação ajuda a reduzir erros decorrentes da utilização de plataformas individuais. Por exemplo, os limites ou silhuetas de partes do corpo humano podem ser capturados em uma trajetória de movimento, se marcadores montados sobre essas partes não estão no "campo de visão" das câmeras \cite{zhou2008human}.
+
+Alguns dos componentes mais importantes desses sistemas são: a aquisição, processamento e interpretação da informação sensorial disponível. No nível mais baixo, a informação de detecção é utilizada para derivar sinais de controle, e a uma informação de nível mais elevado, são utilizados para criar modelos do sistema e do ambiente. A informação sensorial pode ser obtida através de uma variedade de sensores tais como: posição, velocidade, força, tátil, e a visão para citar alguns. Combinando elementos visuais e controladores pode resultar em um melhor algoritmo de rastreamento, mais eficazes e mais precisos, entretanto, essa estratégia exige alto poder de calibração e computação extremamente intensiva \cite{papanikolopoulos1993visual}.
+
+\subsection{Técnicas de determinação de posição}\label{sec:determ-posic}
+Por natureza, o posicionamento é um problema interdisciplinar que traz consigo inúmeras questões em vários campos de pesquisa, como engenharia, ciência da computação e estatística. Como consequência, a concepção e implementação de um sistema de localização é uma tarefa bastante complexa que implica um entendimento nesses domínios. No entanto, a metodologia de estimativa de localização é, em princípio, a mesma que utilizada nos tempos antigos, onde as pessoas usavam a constelação de estrelas para deduzir a localização. Hoje são utilizados dispositivos de referência fixos em locais conhecidos do nosso entorno. Então, o alvo móvel cuja posição deve ser determinada mede ângulos ou distâncias em direção a esses pontos de referência. \cite{linde2006aspects}. Algumas aplicações de localização interna encontram-se resumidas na tabela \ref{table:aplicacoes}.
+
 
 \subsubsection{Posição física e localização simbólica}\label{sec:posic-fisica}
 A localização simbólica, ou posicionamento relativo, descreve o procedimento de determinação da posição atual de um alvo móvel usando o curso e a velocidade da informação. Pode ser subdividida em duas abordagens: odometria e navegação inercial \cite{linde2006aspects}.
@@ -166,7 +167,7 @@ A trilateração é uma técnica para calcular uma posição de um objeto $m$, t
 
 A localização baseada na trilateração implica que os participantes devem ser capazes de medir distâncias (ou diferenças de distância) entre si. A triangulação funciona de forma semelhante, mas em vez de distâncias, os ângulos são medidos. De fato, pode-se demonstrar que a triangulação pode ser transformada em trilateração por meios simples\cite{linde2006aspects}. 
 
-Triangulação requer a medição de ângulos entre as unidades de referência fixas e o alvo móvel. As unidades móveis calculam os ângulos em direção aos sinais emitidos por unidades fixas de referência. Obtém-se então a posição e orientação através dos dados recolhidos. As unidades de referência medem os ângulos na direção do sinal emitido pela unidade móvel. Apenas uma estimativa da localização, mas não a orientação do alvo móvel, pode ser obtida \cite{lutzke2013experimental}. Dois casos podem ser distinguidos, conforme ilustrado na Fig.~\ref{fig:triang}:
+Triangulação requer a medição de ângulos entre as unidades de referência fixas e o alvo móvel. As unidades móveis calculam os ângulos em direção aos sinais emitidos por unidades fixas de referência. Obtém-se então a posição e orientação através dos dados recolhidos. As unidades de referência medem os ângulos na direção do sinal emitido pela unidade móvel. Apenas uma estimativa da localização, mas não a orientação do alvo móvel, pode ser obtida \cite{lutzke2013experimental}. Dois casos podem ser distinguidos, conforme ilustrado na Figura~\ref{fig:triang}:
 
 
 \begin{itemize}
@@ -180,20 +181,21 @@ Outra abordagem de localização é a técnica de detecção de proximidade na q
 
 Pontos de referência (\textit{Landmarks}) são elementos estáticos de um ambiente que pode ser reconhecido por uma unidade móvel. Na maioria das vezes, os pontos de referência são formas geométricas, como retângulos, linhas ou códigos de barras. Itens naturais, como portas podem também servir como pontos de referência. O termo  análise de cena é frequentemente utilizado neste contexto. Unidades móveis tentam localizar-se  em determinado ambiente usando a visão da câmera, bem como funcionalidades de extração para analisar o cenário atual. Uma vez que um marco foi reconhecido e identificado de forma confiável, a posição atual da unidade em relação ao marco correspondente pode ser calculada. Isto é conseguido através de triangulação, trilateração e proximidade \cite{linde2006aspects}.
 
+Detecção e localização do ponto de referência faciais são muito importantes para auxiliar tarefas de reconhecimento e rastreamento facial e reconhecimento de expressão facial \cite{cceliktutan2013comparative}. Detectar os pontos de referência do rosto consiste em duas tarefas principais. O primeiro é a detecção de rosto. O objetivo desta tarefa é encontrar face(s) em uma imagem (se houver) e extrair sua localização (por exemplo, coordenadas). Uma abordagem popular é o Viola e Jones \textit{face detector} \cite{viola2001rapid,viola2004robust}. A segunda tarefa é a detecção de marcos faciais. O objetivo é extrair os componentes faciais, como olhos, sobrancelhas, nariz, narinas, boca e contorno facial de faces detectadas, colocando pontos de referência em cada componente \cite{zhang2010survey}.
 
  \subsection{Reconhecimento facial}\label{sec:recFacial}
 O reconhecimento facial é uma forma de identificar pessoas. Em desenvolvimento há muitos anos. esses sistemas permitem identificar alguém a um longo alcance, porém limitado principalmente pela resolução da câmera utilizada. No entanto, esta solução vem com algumas desvantagens. A adição de vigilância para o vídeo é necessária e, mesmo que seja explicitamente afirmado que as imagens são processadas e não armazenadas, ainda suscita preocupações que podem causar desconforto a alguns usuários. Outra desvantagem é que o software de reconhecimento facial não é muito confiável quando se trata de identificar dois seres semelhantes, como irmãos gêmeos idênticos \cite{fitzpatrick2013real}.
 
-O reconhecimento de faces e mais vantajoso nesse aspecto, pois é possível realizar a identificação de uma pessoa sem ela cooperar ou saber que está sendo identificado. Primeiro é necessário detectar e segmentar faces de cenas complexas (Detecção de Faces). Para cada face, o processo de extração de característica é aplicado (Extração de Característica) e as caracteristicas extraídas são comparadas com os templates cadastrados na galeria de faces. A decisão sobre a identidade da face é então tomada (Reconhecimento de face) \cite{cardia2015avaliaccao}.   
+O reconhecimento de faces e mais vantajoso nesse aspecto, pois é possível realizar a identificação de uma pessoa sem ela cooperar ou saber que está sendo identificado. Primeiro é necessário detectar e segmentar faces de cenas complexas (Detecção de Faces). Para cada face, o processo de extração de característica é aplicado (Extração de Característica) e as características extraídas são comparadas com os \textit{templates} cadastrados na galeria de faces. A decisão sobre a identidade da face é então tomada (Reconhecimento de face) \cite{cardia2015avaliaccao}.   
  
- \subsection{Kinect}\label{sec:kinect}
+ \subsection{\textit{Kinect}}\label{sec:kinect}
  
-O Kinect (Fig.~\ref{fig:kinect}) é um sensor de movimento, projetado pela Microsoft Inc. e lançado em novembro de 2010 para ser usado como controle remoto para o console de videogames Xbox 360. É composto por vários sensores (Fig. ~\ref{fig:kinect}): Uma câmera RGB (Color CMOS, VNA38209015), uma câmera de profundidade composta por um projetor de infravermelho(\textit{infrared} - IR) (OG12 / 0956 / D306 / JG05A) combinado a uma câmera de infravermelho (IR CMOS, Microsoft / X853750001 / VCA379C7130) e uma série de quatro microfones. A câmera infravermelha e a câmera colorida têm uma definição de 640 x 480 pixels. O ângulo de visão é $60\,^{\circ}$ horizontal e $45\,^{\circ}$ vertical. O dispositivo foi projetado para ser usado em uma faixa de 0,5 m a 5 m \cite{sevrin2015characterization}. A tabela \ref{table:comparativoScanners} apresenta um comparativo entre o Kinect e os \textit{scanners} 3D mais utilidados.
+O \textit{Kinect} (Fig.~\ref{fig:kinect}) é um sensor de movimento, projetado pela \textit{Microsoft Inc}. e lançado em novembro de 2010 para ser usado como controle remoto para o console de videogames Xbox 360. É composto por vários sensores (Fig. ~\ref{fig:kinect}): Uma câmera RGB (Color CMOS, VNA38209015), uma câmera de profundidade composta por um projetor de infravermelho (\textit{infrared} - IR) (OG12 / 0956 / D306 / JG05A) combinado a uma câmera de infravermelho (IR CMOS, \textit{Microsoft} / X853750001 / VCA379C7130) e uma série de quatro microfones. A câmera infravermelha e a câmera colorida têm uma definição de 640 x 480 \textit{pixels}. O ângulo de visão é $60\,^{\circ}$ horizontal e $45\,^{\circ}$ vertical. O dispositivo foi projetado para ser usado em uma faixa de 0,5 m a 5 m \cite{sevrin2015characterization}. A tabela \ref{table:comparativoScanners} apresenta um comparativo entre o \textit{Kinect} e os \textit{scanners} 3D mais utilizados.
 
  \begin{figure}[ht]
 \centering
     \includegraphics[resolution=300,width=0.4\textwidth,natwidth=610,natheight=642]{images/kinect.png}
-    \caption{O Sensor Microsoft Kinect.}
+    \caption{O Sensor \textit{Microsoft Kinect}.}
     \label{fig:kinect}
 \end{figure}
 
@@ -216,7 +218,7 @@ O Kinect (Fig.~\ref{fig:kinect}) é um sensor de movimento, projetado pela Micro
 
 
  \subsubsection{Câmera de profundidade (\textit{Depth-camera})}\label{sec:depth}
-A câmera de profundidade é um dispositivo que pode detectar diretamente o alcance da superfície física mais próxima em cada pixel. A câmera de profundidade é única porque possibilita a modelagem 3D em tempo real da geometria da superfície. As câmeras de profundidade oferecem várias vantagens em relação aos sensores de intensidade tradicionais, trabalhando em baixos níveis de luz, fornecendo uma estimativa de escala calibrada, sendo invariante de cores e texturas e resolvendo ambiguidades de silhueta em pose. Eles também simplificam muito alguns difíceis problemas de visão computaconal, como a remoção de fundo falso em uma aplicação de videoconferência \cite{wilson2010combining}. Além disso, é capaz de sintetizar imagens de profundidade realistas de pessoas e, assim, criar um grande conjunto de dados de treinamento, com baixo custo. Algumas das tecnologias usadas para obter informações de profundidade da câmera em profundidade são luz infravermelha e estruturada de tempo de vôo (\textit{time-of-flight}) \cite{bogomjakov2006free}.
+A câmera de profundidade é um dispositivo que pode detectar diretamente o alcance da superfície física mais próxima em cada pixel. A câmera de profundidade é única porque possibilita a modelagem 3D em tempo real da geometria da superfície. As câmeras de profundidade oferecem várias vantagens em relação aos sensores de intensidade tradicionais, trabalhando em baixos níveis de luz, fornecendo uma estimativa de escala calibrada, sendo invariante de cores e texturas e resolvendo ambiguidades de silhueta em pose. Eles também simplificam muito alguns difíceis problemas de visão computacional, como a remoção de fundo falso em uma aplicação de videoconferência \cite{wilson2010combining}. Além disso, é capaz de sintetizar imagens de profundidade realistas de pessoas e, assim, criar um grande conjunto de dados de treinamento, com baixo custo. Algumas das tecnologias usadas para obter informações de profundidade da câmera em profundidade são luz infravermelha e estruturada de tempo de vôo (\textit{time-of-flight}) \cite{bogomjakov2006free}.
 
 O trabalho de Jamie Shotton et. al\cite{Shotton:2013:RHP:2398356.2398381} emprega simples recursos de comparação de profundidade, inspirados por aqueles em \cite{lepetit2005randomized}. Em um dado pixel $x$, a funcionalidade computa: 
 
@@ -243,21 +245,7 @@ Uma contribuição fundamental do trabalho realizado pela \textit{Microsoft} \ci
 As partes são especificadas em um mapa de textura que é retornado para diminuir os vários caracteres durante a renderização. Os pares de imagem e profundidade da parte do corpo são usados como dados totalmente rotulados
 para o aprendizado do algoritmo classificador. Para os experimentos foram usadas 31 partes do corpo (E-Esquerda, D-Direita, S-Superior, I-Inferior): cabeça (ES, DS, EI, DI), pescoço, ombro (E, D), braço (ES, DS, EI, DI),cotovelo (E, D), pulso (E, D), mão (E, D), torso (ES, DS, EI, DI), perna (ES, DS, EI, DI), joelho (E, D), tornozelo (E, D) e pé (E, D). Partes distintas para esquerda e direita permitem ao classificador desambiguar os lados esquerdo e direito do corpo \cite{Shotton:2013:RHP:2398356.2398381}.
 
-\begin{figure*}[ht]
-\centering
-\includegraphics[resolution=300,width=1.0\textwidth,natwidth=610,natheight=642]{images/body_parts.png}
-    \caption{Dados sintéticos e reais. Pares de imagens de produndidade e partes verdadeiras do corpo, com grande variedade de pose, forma, roupa e cortes \cite{Shotton:2013:RHP:2398356.2398381}.}
-    \label{fig:bodyparts}
-\end{figure*}
-
 \paragraph{Florestas de decisão aleatória }\label{sec:forests}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[resolution=300,width=0.45\textwidth,natwidth=610,natheight=642]{images/tree_decision.png}
-    \caption{\textbf{Florestas de decisão aleatória}. Uma floresta é um conjunto de árvores. Cada árvore consiste em nós divididos (azul) e nós folha (verde). As setas vermelhas indicam os caminhos diferentes que podem ser tomadas por árvores diferentes para uma entrada específica \cite{Shotton:2013:RHP:2398356.2398381}.}
-    \label{fig:decisionTree}
-\end{figure}
 
 As árvores e florestas de decisão aleatória \cite{quinlan1986induction, shepherd1983appraisal, amit1997shape, breiman2001random} demonstraram classificações rápidas e eficazes para várias tarefas \cite{lepetit2005randomized, moosmann2007fast, shotton2008semantic}, e podem ser implementadas de forma eficiente na GPU \cite{sharp2008implementing}. Conforme ilustrado na figura \ref{fig:decisionTree}, uma floresta é um conjunto de árvores de decisão $T$, cada uma constituída por nós de divisão e folhas. Cada nó dividido consiste em uma característica ${f_{\theta}}$ e um limite $\tau$. Para classificar o pixel $x$ na imagem $I$, um começa na raiz e avalia repetidamente a equação \ref{eq:eq1}, ramificando para a esquerda ou para a direita de acordo com a comparação com o limite $\tau$. No nó da folha alcançado na árvore $t$, uma distribuição aprendida $P_{t} (c | I, x)$ sobre as etiquetas das partes do corpo $c$ é armazenada. As distribuições são calculadas em média para todas as árvores na floresta para dar a classificação final.
 
@@ -266,7 +254,7 @@ P(c | I, x) = \frac{1}{T} \sum_{t=1}^{T} P_{t} (c | I, x).
 \label{eq:eq2}
 \end{align}
 
-Cada árvore é treinada em um conjunto diferente de imagens sintetizadas aleatoriamente. Um subconjunto aleatório de 2000 exemplos de pixels de cada imagem é escolhido para assegurar uma distribuição aproximadamente igual em partes do corpo. Cada árvore é treinada usando o seguinte algoritmo: 
+Cada árvore é treinada em um conjunto diferente de imagens sintetizadas aleatoriamente. Um subconjunto aleatório de 2000 exemplos de \textit{pixels} de cada imagem é escolhido para assegurar uma distribuição aproximadamente igual em partes do corpo. Cada árvore é treinada usando o seguinte algoritmo: 
 
 \begin{enumerate}
     \item Propor aleatoriamente um conjunto de candidatos divididos $\phi = ({\theta}, \tau)$ (Caracterizar os parâmetros $\theta$ e os limiares $\tau$ );
@@ -283,11 +271,26 @@ Cada árvore é treinada em um conjunto diferente de imagens sintetizadas aleato
              G(\phi) &= H(Q) - \sum_{s\in \{1,r\}} \frac{|Q_{s}(\phi)|}{|Q|}H(Q_{s}(\phi))
             \label{eq:eq5_6}
         \end{align}
-        Onde a entropia de Shannon\footnote{A entropia é definida como sendo uma forma de medir o grau médio de incerteza a respeito de fontes de informação, o que consequentemente permite a quantificação da informação presente que flui no sistema. Em termos simples, o conceito de entropia se associa à idéia de que, quanto mais incerto é o resultado de um experimento aleatório, maior é a informação que se obtém ao observar a sua ocorrência.} \cite{shannon2001mathematical}
+        Onde a entropia de Shannon\footnote{A entropia é definida como sendo uma forma de medir o grau médio de incerteza a respeito de fontes de informação, o que consequentemente permite a quantificação da informação presente que flui no sistema. Em termos simples, o conceito de entropia se associa à ideia de que, quanto mais incerto é o resultado de um experimento aleatório, maior é a informação que se obtém ao observar a sua ocorrência.} \cite{shannon2001mathematical}
 $H(Q)$ é calculada no histograma normalizado das etiquetas das partes do corpo $l_{I}(x)$ para todos $(I,x) \in Q$.
     \item Se o maior ganho $G(\phi^{*})$ for suficiente e a profundidade na árvore estiver abaixo de um máximo, então recolete para subconjuntos esquerdo e direito $Q_{1}(\phi^{*})$ e $Q_{r}(\phi^{*})$.
 \end{enumerate}
 
 Para manter os tempos de treinamento baixos, foi empregada uma implementação distribuída. Treinar três árvores com profundidade tamanho 20 em um milhão de imagens leva cerca de um dia em um \textit{cluster} de mil núcleos.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[resolution=300,width=0.45\textwidth,natwidth=610,natheight=642]{images/tree_decision.png}
+    \caption{\textbf{Florestas de decisão aleatória}. Uma floresta é um conjunto de árvores. Cada árvore consiste em nós divididos (azul) e nós folha (verde). As setas vermelhas indicam os caminhos diferentes que podem ser tomadas por árvores diferentes para uma entrada específica \cite{Shotton:2013:RHP:2398356.2398381}.}
+    \label{fig:decisionTree}
+\end{figure}
+
+\begin{figure*}[ht]
+\centering
+\includegraphics[resolution=300,width=1.0\textwidth,natwidth=610,natheight=642]{images/body_parts.png}
+    \caption{Dados sintéticos e reais. Pares de imagens de profundidade e partes verdadeiras do corpo, com grande variedade de pose, forma, roupa e cortes \cite{Shotton:2013:RHP:2398356.2398381}.}
+    \label{fig:bodyparts}
+\end{figure*}
+
 
 Este trabalho, utiliza uma recente abordagem sensorial: a utilização de mapas de profundidade para a detecção de presença em um ambiente interno. Tratando-se de um sistema biométrico, do tipo físico, tendo como características desse tipo de sistema: não cooperativa, sigilosa, não habituado, não auxiliado e \textit{less intrusive}. o \textit{Kinect SDK} utiliza os resultados do algoritmo de florestas de decisão aleatória para identificar \textit{joints} e partes do corpo de indivíduos em uma cena. A partir de tecnologias visuais, livre de marcador, são utilizados processos de triangulação estéreo para extração do mapa de profundidade, calculando a partir desse, a posição física dos indivíduos.

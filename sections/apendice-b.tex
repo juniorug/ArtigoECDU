@@ -1,0 +1,26 @@
+\section{Resultados: Tabela comparativa}\label{sec:apendiceB}
+ \begin{table*}[!ht]
+ \caption{Comparativo entre as tecnologias atuais de detecção de localização.}
+ \label{table:comparativotecnologias}
+ \begin{tabular}{|p{1cm}p{1.3cm}cccccp{1.6cm}p{1.5cm}p{1.5cm}p{1.5cm}|}
+\hline  
+\textbf{Tecnologia} & \textbf{Técnica} & \textbf{Física} & \textbf{Simbólica} & \textbf{Absoluta} & \textbf{Relativa} & \textbf{Reconhecimento} & \textbf{Exatidão e precisão se disponível} & \textbf{Escala} & \textbf{Custo} & \textbf{Limitações}\\ \hline  
+GPS & Lateração \textit{time-of-flight} & $\bullet$& & $\bullet$& & & 1-5 metros (95-99 por cento) & 24 satélites em todo o mundo &Infraestrutura caras \$100 por receptores & Não funciona em ambientes fechados \\\hline
+Crachás ativos &Infravermelho difuso. Proximidade celular & & $\bullet$& $\bullet$& & $\checkmark$ & Tamanho do quarto & 1 base por sala, crachá por base por 10 segundos & Custos administrativos, tags e bases baratas & Luz solar e fluorescente interferem com infravermelhos\\\hline
+Bastões ativos & Ultra-som. Lateração \textit{time-of-flight} &$\bullet$ & & $\bullet$ & & $\checkmark$ & 9 cm (95 por cento) & 1 base por 10 metros quadrados, 25 computações por quarto por segundo & Custos administrativos, tags e sensores baratos & Grade de sensor de teto necessária\\\hline
+MotionStar & Análise de cena, lateração & $\bullet$& & $\bullet$ & & $\checkmark$ & 1mm, 1ms, 0,1$^\circ$ (quase 100 por cento) & Controlador por cena, 108 sensores por cena & 
+Cenas controladas, hardware caro & Ligação da unidade de controle, instalação precisa\\\hline
+VHF - Variação Ominidirecional & Angulação & $\bullet$ & & $\bullet$ & & & 1$^\circ$ radial ($\approx$ 100 por cento) & Vários transmissores por área metropolitana & Infraestrutura cara, receptores de avião baratos & 30-140 milhas náuticas, linha de visão\\\hline
+Cricket &Proximidade, lateração & & $\bullet$ & $\circ$ & $\circ$ & & 4 x 4 pés de regiões ($\approx$ 100 por cento) & $\approx$ 1 baliza por 16 pés quadrados& \$ 10 balizas e receptores & Nenhuma computação de receptor de gerenciamento central\\\hline
+MSR RADAR & Análise de cena 802.11RF e triangulação & $\bullet$& & $\bullet$ & & $\checkmark$ & 3-4,3 m (50 por cento)& 3 bases por andar & Instalação de rede 802.11, $\approx$ \$ 100 NICs sem fio & NICs sem fio necessárias\\\hline
+PinPoint 3D-iD & Lateração de RF & $\bullet$ & & $\bullet$ & & $\checkmark$ & 1-3 m & Várias bases por prédio & Instalação de infraestrutura, \textit{hardware} caro & Proprietário, interferência 802.11\\\hline
+Avalanche Transceivers & Sinal de rádio. Proximidade de força & $\bullet$ & & & $\bullet$ & & Variável, alcance de 60-80 metros & 1 transceptor por pessoa & $\approx$ \$ 200 por transceptor&  Curta faixa de rádio, atenuação de sinal indesejável\\\hline
+Easy Living & Visão, triangulação & & $\bullet$ & $\bullet$ & & $\checkmark$ & Variável & 3 câmeras por sala pequena & Poder de processamento, câmeras de instalação & Câmeras públicas ubíquas\\\hline
+Piso inteligente (Smart Floor) & Proximidade de contato físico & $\bullet$ & & $\bullet$ & & $\checkmark$ & Espaçamento dos sensores de pressão (100 por cento) & Rede de sensores completa por piso & Instalação de grade de sensores, criação de conjunto de dados de treinamento de passadas & O reconhecimento pode não se ajustar a grandes populações\\\hline
+Sistemas de identificação automática & Proximidade & & $\bullet$ & $\circ$ & $\circ$ & $\checkmark$ & Fase de fenômeno de detecção (RFID, tipicamente <1m) & Sensor por local & Instalação, custos de hardware variáveis & Precisa conhecer os locais dos sensores\\\hline
+Wireless Andrew & 802.11, proximidade & & $\bullet$ & $\bullet$ & & $\checkmark$ & 802.11 tamanho da célula, (aproximadamente 100 m de área interior, 1 km de espaço livre) & Muitas bases por campus & Implementação 802.11, $\approx$ \$ 100 NICs sem fio & São necessárias NIC sem fio, geometrias de células de RF\\\hline
+E911 & Triangulação & $\bullet$& & $\bullet$ & & $\checkmark$ & 150-300 m (95 por cento) & Densidade da infraestrutura celular & Atualizando o hardware do telefone ou a infraestrutura celular & Somente onde a cobertura celular existe\\\hline
+SpotON & Lateração \textit{ad hoc} & $\bullet$ & & $\bullet$ & & $\checkmark$ & Depende do tamanho do \textit{cluster} & \textit{Cluster} pelo menos 2 \textit{tags} & \$ 30 por \textit{tag}, sem infraestrutura & Atenuação menos precisa do que o \textit{time-of-flight}\\\hline
+Kinect & Triangulação & $\bullet$ & & $\bullet$ & & & $\approx$5cm - 98\% & Uma Base por sala & \$ 20 - 50 por sensor & Curto alcance\\\hline
+\end{tabular}
+\end{table*}

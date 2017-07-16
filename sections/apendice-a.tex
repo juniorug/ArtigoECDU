@@ -1,6 +1,47 @@
-\section{Dicas de escrita}
-\begin{enumerate}
-\item Evitem textos grandes, com poucos pontos de continuação. Cada período deve conter uma única informação.
-\item Evitem erros de gramática/ortografia. Isso é muito grave.
-\item ll
-\end{enumerate}
+\onecolumn
+\section{DrawFaceModel}\label{sec:apendiceA}
+\begin{minted}{csharp}
+public void DrawFaceModel(DrawingContext drawingContext, int personIndex)
+{
+
+    if (!this.lastFaceTrackSucceeded || this.skeletonTrackingState != 
+        SkeletonTrackingState.Tracked)
+    {
+        return;
+    }
+
+    var faceModelPts = new List<Point>();
+    var faceModel = new List<FaceModelTriangle>();
+
+    for (int i = 0; i < this.facePoints.Count; i++)
+    {
+        faceModelPts.Add(new Point(this.facePoints[i].X + 0.5f, 
+          this.facePoints[i].Y + 0.5f));
+    }
+
+    foreach (var t in faceTriangles)
+    {
+        var triangle = new FaceModelTriangle();
+        triangle.P1 = faceModelPts[t.First];
+        triangle.P2 = faceModelPts[t.Second];
+        triangle.P3 = faceModelPts[t.Third];
+        faceModel.Add(triangle);
+
+    }
+
+    var faceModelGroup = new GeometryGroup();
+    for (int i = 0; i < faceModel.Count; i++)
+    {
+        var faceTriangle = new GeometryGroup();
+        faceTriangle.Children.Add(new LineGeometry(faceModel[i].P1, faceModel[i].P2));
+        faceTriangle.Children.Add(new LineGeometry(faceModel[i].P2, faceModel[i].P3));
+        faceTriangle.Children.Add(new LineGeometry(faceModel[i].P3, faceModel[i].P1));
+        faceModelGroup.Children.Add(faceTriangle);
+    }
+
+    SolidColorBrush[] colors = new SolidColorBrush[6] { Brushes.Blue, Brushes.Yellow, 
+        Brushes.Pink, Brushes.Green, Brushes.Pink, Brushes.Salmon };
+    drawingContext.DrawGeometry(colors[(personIndex % 6)], 
+    new Pen(colors[(personIndex % 6)], 1.0), faceModelGroup);
+}
+\end{minted}
